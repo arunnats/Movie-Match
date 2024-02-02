@@ -16,7 +16,29 @@ async def fetch_watch_providers(session, movie_id, tmdb_api_key):
 
             if response.status == 200:
                 watch_providers_data = await response.json()
-                return watch_providers_data.get("results", {})
+                results = watch_providers_data.get("results", {})
+
+                # Extract streaming providers for India (IN)
+                india_providers = results.get("IN", {})
+                streaming_providers = india_providers.get("flatrate", [])
+
+                # Format the data
+                formatted_providers = []
+                if not streaming_providers:
+                    formatted_provider = {
+                        "StreamingService": "None Found",
+                        "LogoPath": "",
+                    }
+                    formatted_providers.append(formatted_provider)
+                else:
+                    for provider in streaming_providers:
+                        formatted_provider = {
+                            "StreamingService": provider["provider_name"],
+                            "LogoPath": f"https://image.tmdb.org/t/p/w500{provider['logo_path']}",
+                        }
+                        formatted_providers.append(formatted_provider)
+
+                return formatted_providers
 
             else:
                 print(f"Failed to fetch watch providers for movie {movie_id}.")
@@ -24,7 +46,7 @@ async def fetch_watch_providers(session, movie_id, tmdb_api_key):
     except aiohttp.ClientError as e:
         print(f"Error fetching watch providers for movie {movie_id}: {e}")
 
-    return {}
+    return [{"StreamingService": "None Found", "LogoPath": ""}]
 
 async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
     async with semaphore:
@@ -47,16 +69,18 @@ async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
                     if tmdb_id:
                         keywords_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/keywords?api_key={tmdb_api_key}"
                         poster_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={tmdb_api_key}"
+                        reviews_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/reviews?api_key={tmdb_api_key}"
 
                         # await asyncio.sleep(1 / 50)
 
-                        async with session.get(keywords_url) as keywords_response, session.get(poster_url) as poster_response:
+                        async with session.get(keywords_url) as keywords_response, session.get(poster_url) as poster_response, session.get(reviews_url) as reviews_response:
                             keywords_data = await keywords_response.json()
                             poster_data = await poster_response.json()
+                            reviews_data = await reviews_response.json()
 
                             await asyncio.sleep(1 / 45)
 
-                            if keywords_response.status == 200 and poster_response.status == 200:
+                            if keywords_response.status == 200 and poster_response.status == 200 and reviews_response.status == 200:
                                 # Fetching watch providers data
                                 watch_providers_data = await fetch_watch_providers(session, tmdb_id, tmdb_api_key)
 
@@ -65,9 +89,10 @@ async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
                                     "Keywords": [keyword['name'] for keyword in keywords_data.get("keywords", [])],
                                     "PosterAlt": f"https://image.tmdb.org/t/p/w500{poster_data.get('poster_path', '')}" if poster_data.get('poster_path') else "",
                                     "StreamingService": watch_providers_data,
+                                    "Reviews": reviews_data.get("results", []),
                                 })
                             else:
-                                print(f"Failed to fetch Keywords or Poster data for {row['tconst']}.")
+                                print(f"Failed to fetch Keywords, Poster, or Reviews data for {row['tconst']}.")
 
                     else:
                         print(f"TMDB ID not found for {row['tconst']}.")
@@ -139,7 +164,7 @@ async def main():
     url = "https://datasets.imdbws.com/title.basics.tsv.gz"
 
     batch_size = 100
-    start_tconst = "tt0054215"  # Specify the starting tconst value
+    start_tconst = "tt0100157"  # Specify the starting tconst value
 
     async with ClientSession() as session:
         async with session.get(url) as response:
