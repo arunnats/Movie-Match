@@ -1,41 +1,41 @@
-.search{
-    display: flex ;
-    width: 100vh ;
-    height: 8vh;
-    background-color: var(--search-color) ;
-    align-items: center ;
-    padding: 2px ;
-    border-width: 10px ;
+.search {
+	display: flex;
+	width: 100vh;
+	height: 8vh;
+	background-color: var(--search-color);
+	align-items: center;
+	padding: 2px;
+	border-width: 10px;
 }
 
-.iconSearch{
-    background-color: white ;
-    width: 5%;
-    height: 99% ;
-    display: flex ;
-    justify-content: center ;
-    align-items: center ;
-    padding-left: 20px ;
+.iconSearch {
+	background-color: white;
+	width: 5%;
+	height: 99%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-left: 20px;
 }
 
-.bar{
-    border: none ;
-    width: 80%;
-    height: 95% ;
-    outline: none ;
-    font-size: 20px ;
+.bar {
+	border: none;
+	width: 80%;
+	height: 95%;
+	outline: none;
+	font-size: 20px;
 }
 
-.searchButton{
-    border: none ;
-    background-color: var(--button-color) ;
-    color: white ;
-    width: 4vw ;
-    height: 4vh ;
-    font-size: 100% ;
-    padding: 5px ;
+.searchButton {
+	border: none;
+	background-color: var(--button-color);
+	color: white;
+	width: 4vw;
+	height: 4vh;
+	font-size: 100%;
+	padding: 5px;
 }
 
-input::placeholder{
-    font-size: 20px ;
+input::placeholder {
+	font-size: 20px;
 }

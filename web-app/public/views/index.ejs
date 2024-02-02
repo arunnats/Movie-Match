@@ -3,9 +3,9 @@
 <html>
 	<head>
 		<title>movie-watch</title>
-		<link rel="stylesheet" href="../css/searchbar.css" />
-		<link rel="stylesheet" href="../css/test.css" />
-		<link rel="stylesheet" href="../css/theme.css" />
+		<link rel="stylesheet" href="/css/searchbar.css" />
+		<link rel="stylesheet" href="/css/test.css" />
+		<link rel="stylesheet" href="/css/theme.css" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -24,9 +24,15 @@
 		</div>
 
 		<div class="main">
-			<form class="search" action="">
+			<form class="search" action="#" id="searchForm">
 				<div class="iconSearch"><i class="fa fa-search"></i></div>
-				<input type="text" placeholder="Search.." class="bar" />
+				<input
+					type="text"
+					placeholder="Search.."
+					class="bar"
+					id="searchInput"
+					oninput="showResult(this.value)"
+				/>
 				<div
 					style="
 						width: 15%;
@@ -37,7 +43,8 @@
 						align-items: center;
 					"
 				>
-					<button class="searchButton">Search</button>
+					<!-- <button class="searchButton" id="searchButton">Search</button> -->
+					<button class="" id="searchButton">Search</button>
 				</div>
 			</form>
 		</div>
@@ -47,6 +54,28 @@
 			document.getElementById("theme").addEventListener("click", () => {
 				document.body.classList.toggle("light_theme");
 			});
+
+			document
+				.getElementById("searchForm")
+				.addEventListener("submit", async function (event) {
+					event.preventDefault(); // Prevent the form from being submitted normally
+
+					const searchQuery = document.getElementById("searchInput").value;
+
+					console.log("searchQuery:", searchQuery);
+
+					const response = await fetch("/search", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ query: searchQuery }),
+					});
+
+					const result = await response.json(); // Parse JSON response
+
+					console.log("Result:", result);
+				});
 		</script>
 	</body>
 </html>
