@@ -123,9 +123,9 @@ async def main():
                         last_inserted_tconst = None
 
                     if last_inserted_tconst:
-                        movie_df = df[df['tconst'] > last_inserted_tconst].head(10000)
+                        movie_df = df[df['tconst'] > last_inserted_tconst] 
                     else:
-                        movie_df = df[df['titleType'] == 'movie'].head(10000)
+                        movie_df = df[df['titleType'] == 'movie']
 
                     semaphore = asyncio.Semaphore(50)  
                     tasks_tmdb = [fetch_tmdb_data(session, semaphore, row, tmdb_api_key) for _, row in movie_df.iterrows()]
