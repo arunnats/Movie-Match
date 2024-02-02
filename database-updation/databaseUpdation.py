@@ -13,8 +13,8 @@ with open('dbConfig.json') as config_file:
 mongo_connection_string = config.get('mongo_connection_string', '')
 mongo_database_name = config.get('mongo_database_name', '')
 mongo_collection_name = config.get('mongo_collection_name', '')
-tmdb_api_key = config.get('tmdb_api_key', '') 
-omdb_api_key = config.get('omdb_api_key', '') 
+tmdb_api_key = config.get('tmdb_api_key', '')
+omdb_api_key = config.get('omdb_api_key', '')
 
 if not (mongo_connection_string and tmdb_api_key and omdb_api_key):
     print("MongoDB connection string or API keys not found in config.json.")
@@ -39,9 +39,9 @@ if response.status_code == 200:
             last_inserted_tconst = None
 
         if last_inserted_tconst:
-            movie_df = df[df['tconst'] > last_inserted_tconst].head(50)
+            movie_df = df[df['tconst'] > last_inserted_tconst].head(100)
         else:
-            movie_df = df[df['titleType'] == 'movie'].head(50)
+            movie_df = df[df['titleType'] == 'movie'].head(100)
 
         for _, row in movie_df.iterrows():
             movie_document = {
@@ -49,11 +49,13 @@ if response.status_code == 200:
                 "titleType": row['titleType'],
             }
 
-            # Fetch TMDB ID using the IMDb ID
             tmdb_id_url = f"https://api.themoviedb.org/3/find/{row['tconst']}?api_key={tmdb_api_key}&external_source=imdb_id"
-            tmdb_id_response = requests.get(tmdb_id_url)
 
-            if tmdb_id_response.status_code == 200:
+            try:
+                tmdb_id_response = requests.get(tmdb_id_url, timeout=15)
+
+                tmdb_id_response.raise_for_status() 
+
                 tmdb_id_data = tmdb_id_response.json()
                 tmdb_id_results = tmdb_id_data.get("movie_results", [])
 
@@ -61,7 +63,6 @@ if response.status_code == 200:
                     tmdb_id = tmdb_id_results[0].get("id", None)
 
                     if tmdb_id:
-                        # Fetch Keywords and Poster details using TMDB ID
                         keywords_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/keywords?api_key={tmdb_api_key}"
                         keywords_response = requests.get(keywords_url)
 
@@ -78,7 +79,6 @@ if response.status_code == 200:
                                 "PosterAlt": f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else "",
                             })
 
-                            # Update other fields as before
                             omdb_url = f"http://www.omdbapi.com/?i={row['tconst']}&apikey={omdb_api_key}"
                             omdb_response = requests.get(omdb_url)
 
@@ -98,7 +98,8 @@ if response.status_code == 200:
                                     "Language": omdb_data.get("Language", ""),
                                     "Country": omdb_data.get("Country", ""),
                                     "Poster": omdb_data.get("Poster", ""),
-                                    "RottenTomatoesRating": omdb_data["Ratings"][1]["Value"] if len(omdb_data.get("Ratings", [])) > 1 else "",
+                                    "RottenTomatoesRating": omdb_data["Ratings"][1]["Value"] if len(
+                                        omdb_data.get("Ratings", [])) > 1 else "",
                                     "IMDBRating": omdb_data.get("imdbRating", ""),
                                 })
 
@@ -116,8 +117,9 @@ if response.status_code == 200:
                 else:
                     print(f"No TMDB results found for {row['tconst']}.")
 
-            else:
-                print(f"Failed to fetch TMDB ID for {row['tconst']}.")
+            except requests.exceptions.RequestException as e:
+                print(f"Error fetching TMDB ID for {row['tconst']}: {e}")
+                continue  # Skip to the next iteration
 
         client.close()
 
