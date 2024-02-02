@@ -7,6 +7,25 @@ from pymongo import MongoClient
 import json
 from aiohttp import ClientSession
 
+async def fetch_watch_providers(session, movie_id, tmdb_api_key):
+    watch_providers_url = f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers?api_key={tmdb_api_key}"
+
+    try:
+        async with session.get(watch_providers_url) as response:
+            response.raise_for_status()
+
+            if response.status == 200:
+                watch_providers_data = await response.json()
+                return watch_providers_data.get("results", {})
+
+            else:
+                print(f"Failed to fetch watch providers for movie {movie_id}.")
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching watch providers for movie {movie_id}: {e}")
+
+    return {}
+
 async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
     async with semaphore:
         movie_document = {
@@ -38,13 +57,18 @@ async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
                             await asyncio.sleep(1 / 45)
 
                             if keywords_response.status == 200 and poster_response.status == 200:
+                                # Fetching watch providers data
+                                watch_providers_data = await fetch_watch_providers(session, tmdb_id, tmdb_api_key)
+
                                 movie_document.update({
                                     "Title": row['originalTitle'],
                                     "Keywords": [keyword['name'] for keyword in keywords_data.get("keywords", [])],
                                     "PosterAlt": f"https://image.tmdb.org/t/p/w500{poster_data.get('poster_path', '')}" if poster_data.get('poster_path') else "",
+                                    "StreamingService": watch_providers_data,
                                 })
                             else:
                                 print(f"Failed to fetch Keywords or Poster data for {row['tconst']}.")
+
                     else:
                         print(f"TMDB ID not found for {row['tconst']}.")
                 
@@ -123,9 +147,9 @@ async def main():
                         last_inserted_tconst = None
 
                     if last_inserted_tconst:
-                        movie_df = df[df['tconst'] > last_inserted_tconst].head(10000)
+                        movie_df = df[df['tconst'] > last_inserted_tconst].head(100)
                     else:
-                        movie_df = df[df['titleType'] == 'movie'].head(10000)
+                        movie_df = df[df['titleType'] == 'movie'].head(100)
 
                     semaphore = asyncio.Semaphore(50)  
                     tasks_tmdb = [fetch_tmdb_data(session, semaphore, row, tmdb_api_key) for _, row in movie_df.iterrows()]
@@ -139,6 +163,10 @@ async def main():
                             result_tmdb.update(result_omdb)
                             collection.insert_one(result_tmdb)
                             print(f"Document for {result_tmdb['tconst']} inserted into MongoDB successfully.")
+                            
+                            # Print watch providers data
+                            watch_providers_data = result_tmdb.get("StreamingService", {})
+                            # print(f"Watch Providers Data: {watch_providers_data}")
 
                     client.close()
 
