@@ -46,9 +46,16 @@ app.get("/", (req, res) => {
 app.post("/search", async (req, res) => {
 	try {
 		const { query } = req.body;
+		console.log("Received query:", query);
 
 		const fuse = new Fuse(cachedMovies, fuseOptions);
-		const result = fuse.search(query).slice(0, 50);
+
+		const searchResults = fuse.search(query).slice(0, 50);
+
+		const result = searchResults.map(({ item }) => ({
+			tconst: item.tconst,
+			title: item.Title,
+		}));
 
 		res.json({ result });
 	} catch (error) {

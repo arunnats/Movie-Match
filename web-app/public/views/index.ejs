@@ -55,10 +55,34 @@
 				document.body.classList.toggle("light_theme");
 			});
 
+			async function showResult(str) {
+				if (str.length === 0) {
+					document.getElementById("searchForm").classList.add("hide");
+				} else {
+					document.getElementById("searchForm").classList.remove("hide");
+				}
+
+				try {
+					const response = await fetch("/search", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ query: str }),
+					});
+
+					const result = await response.json();
+
+					document.getElementById("searchForm").innerHTML = result.response;
+				} catch (error) {
+					console.error("Error:", error);
+				}
+			}
+
 			document
 				.getElementById("searchForm")
 				.addEventListener("submit", async function (event) {
-					event.preventDefault(); // Prevent the form from being submitted normally
+					event.preventDefault();
 
 					const searchQuery = document.getElementById("searchInput").value;
 
@@ -72,7 +96,7 @@
 						body: JSON.stringify({ query: searchQuery }),
 					});
 
-					const result = await response.json(); // Parse JSON response
+					const result = await response.json();
 
 					console.log("Result:", result);
 				});
