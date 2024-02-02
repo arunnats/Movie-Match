@@ -1,9 +1,11 @@
 import asyncio
 import gzip
+import aiohttp
 import pandas as pd
 from pymongo import MongoClient
 import json
 from aiohttp import ClientSession
+from io import BytesIO
 
 async def fetch_watch_providers(session, movie_id, tmdb_api_key):
     watch_providers_url = f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers?api_key={tmdb_api_key}"
@@ -19,7 +21,7 @@ async def fetch_watch_providers(session, movie_id, tmdb_api_key):
             else:
                 print(f"Failed to fetch watch providers for movie {movie_id}.")
 
-    except requests.exceptions.RequestException as e:
+    except aiohttp.ClientError as e:
         print(f"Error fetching watch providers for movie {movie_id}: {e}")
 
     return {}
@@ -70,7 +72,7 @@ async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
                     else:
                         print(f"TMDB ID not found for {row['tconst']}.")
 
-        except requests.exceptions.RequestException as e:
+        except aiohttp.ClientError as e:
             print(f"Error fetching TMDB ID for {row['tconst']}: {e}")
 
         return movie_document
@@ -104,7 +106,7 @@ async def fetch_omdb_data(session, row, omdb_api_key):
             else:
                 print(f"Failed to fetch OMDB data for {row['tconst']}.")
 
-    except requests.exceptions.RequestException as e:
+    except aiohttp.ClientError as e:
         print(f"Error fetching OMDB data for {row['tconst']}: {e}")
 
     return None
@@ -137,6 +139,7 @@ async def main():
     url = "https://datasets.imdbws.com/title.basics.tsv.gz"
 
     batch_size = 100
+    start_tconst = "tt0054215"  # Specify the starting tconst value
 
     async with ClientSession() as session:
         async with session.get(url) as response:
@@ -159,9 +162,9 @@ async def main():
 
                     while True:
                         if last_inserted_tconst:
-                            movie_df = df[df['tconst'] > last_inserted_tconst].head(batch_size)
+                            movie_df = df[(df['tconst'] > last_inserted_tconst) & (df['titleType'] == 'movie') & df['originalTitle'].notna()].head(batch_size)
                         else:
-                            movie_df = df[df['titleType'] == 'movie'].head(batch_size)
+                            movie_df = df[(df['tconst'] >= start_tconst) & (df['titleType'] == 'movie') & df['originalTitle'].notna()].head(batch_size)
 
                         if movie_df.empty:
                             break
