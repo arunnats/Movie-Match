@@ -7,46 +7,51 @@ from pymongo import MongoClient
 import json
 from aiohttp import ClientSession
 
-async def fetch_tmdb_data(session, row, tmdb_api_key):
-    movie_document = {
-        "tconst": row['tconst'],
-        "titleType": row['titleType'],
-    }
+async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
+    async with semaphore:
+        movie_document = {
+            "tconst": row['tconst'],
+            "titleType": row['titleType'],
+        }
 
-    tmdb_id_url = f"https://api.themoviedb.org/3/find/{row['tconst']}?api_key={tmdb_api_key}&external_source=imdb_id"
+        tmdb_id_url = f"https://api.themoviedb.org/3/find/{row['tconst']}?api_key={tmdb_api_key}&external_source=imdb_id"
 
-    try:
-        async with session.get(tmdb_id_url, timeout=15) as response:
-            response.raise_for_status()
-            tmdb_id_data = await response.json()
-            tmdb_id_results = tmdb_id_data.get("movie_results", [])
+        try:
+            async with session.get(tmdb_id_url, timeout=15) as response:
+                response.raise_for_status()
+                tmdb_id_data = await response.json()
+                tmdb_id_results = tmdb_id_data.get("movie_results", [])
 
-            if tmdb_id_results:
-                tmdb_id = tmdb_id_results[0].get("id", None)
+                if tmdb_id_results:
+                    tmdb_id = tmdb_id_results[0].get("id", None)
 
-                if tmdb_id:
-                    keywords_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/keywords?api_key={tmdb_api_key}"
-                    poster_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={tmdb_api_key}"
+                    if tmdb_id:
+                        keywords_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/keywords?api_key={tmdb_api_key}"
+                        poster_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={tmdb_api_key}"
 
-                    async with session.get(keywords_url) as keywords_response, session.get(poster_url) as poster_response:
-                        keywords_data = await keywords_response.json()
-                        poster_data = await poster_response.json()
+                        # await asyncio.sleep(1 / 50)
 
-                        if keywords_response.status == 200 and poster_response.status == 200:
-                            movie_document.update({
-                                "Title": row['originalTitle'],
-                                "Keywords": [keyword['name'] for keyword in keywords_data.get("keywords", [])],
-                                "PosterAlt": f"https://image.tmdb.org/t/p/w500{poster_data.get('poster_path', '')}" if poster_data.get('poster_path') else "",
-                            })
-                        else:
-                            print(f"Failed to fetch Keywords or Poster data for {row['tconst']}.")
-                else:
-                    print(f"TMDB ID not found for {row['tconst']}.")
-            
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching TMDB ID for {row['tconst']}: {e}")
-    
-    return movie_document
+                        async with session.get(keywords_url) as keywords_response, session.get(poster_url) as poster_response:
+                            keywords_data = await keywords_response.json()
+                            poster_data = await poster_response.json()
+
+                            await asyncio.sleep(1 / 45)
+
+                            if keywords_response.status == 200 and poster_response.status == 200:
+                                movie_document.update({
+                                    "Title": row['originalTitle'],
+                                    "Keywords": [keyword['name'] for keyword in keywords_data.get("keywords", [])],
+                                    "PosterAlt": f"https://image.tmdb.org/t/p/w500{poster_data.get('poster_path', '')}" if poster_data.get('poster_path') else "",
+                                })
+                            else:
+                                print(f"Failed to fetch Keywords or Poster data for {row['tconst']}.")
+                    else:
+                        print(f"TMDB ID not found for {row['tconst']}.")
+                
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching TMDB ID for {row['tconst']}: {e}")
+
+        return movie_document
 
 async def fetch_omdb_data(session, row, omdb_api_key):
     omdb_url = f"http://www.omdbapi.com/?i={row['tconst']}&apikey={omdb_api_key}"
@@ -123,7 +128,8 @@ async def main():
                         movie_df = df[df['titleType'] == 'movie'].head(1000)
 
                     # Fetching TMDB data
-                    tasks_tmdb = [fetch_tmdb_data(session, row, tmdb_api_key) for _, row in movie_df.iterrows()]
+                    semaphore = asyncio.Semaphore(50)  # Limit to 50 concurrent requests
+                    tasks_tmdb = [fetch_tmdb_data(session, semaphore, row, tmdb_api_key) for _, row in movie_df.iterrows()]
                     results_tmdb = await asyncio.gather(*tasks_tmdb)
 
                     # Fetching OMDB data
