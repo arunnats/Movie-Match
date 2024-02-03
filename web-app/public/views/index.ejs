@@ -16,7 +16,7 @@
 
 	<body>
 		<div class="header">
-			<div class=".theme_hold">
+			<div class="theme_hold">
 				<svg id="theme" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 					<title>weather-night</title>
 					<path
@@ -41,7 +41,8 @@
 					id="searchInput"
 					oninput="showResult(this.value)"
 				/>
-				<div id="livesearch"></div>
+				<div id="searchResults"></div>
+				<button id="viewItemButton">View Item</button>
 			</form>
 		</div>
 
@@ -52,69 +53,29 @@
 				document.body.classList.toggle("light_theme");
 			});
 
-			async function showResult(str) {
-				if (str.length === 0) {
-					$("#livesearch").addClass("hide");
-				} else {
-					$("#livesearch").removeClass("hide");
-				}
-
-				try {
-					const response = await fetch("/search", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({ query: str }),
-					});
-
-					if (!response.ok) {
-						throw new Error(`HTTP error! status: ${response.status}`);
-					}
-
-					const result = await response.json();
-
-					console.log("Result:", result);
-
-					if (result && result.response) {
-						const livesearch = $("#livesearch");
-						livesearch.empty();
-
-						// Display the first 5 results below the search bar
-						for (let i = 0; i < Math.min(5, result.response.length); i++) {
-							const item = result.response[i];
-							console.log("item:", item);
-							const resultElement = $("<div>").text(
-								`${item.tconst} - ${item.title}`
-							);
-							livesearch.append(resultElement);
-						}
-					}
-				} catch (error) {
-					console.error("Error:", error);
-				}
-			}
-
 			document
-				.getElementById("searchForm")
-				.addEventListener("submit", async function (event) {
-					event.preventDefault();
-
+				.getElementById("viewItemButton")
+				.addEventListener("click", async function () {
 					const searchQuery = document.getElementById("searchInput").value;
 
-					console.log("searchQuery:", searchQuery);
+					try {
+						const response = await fetch("/search", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ query: searchQuery }),
+						});
 
-					const response = await fetch("/search", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({ query: searchQuery }),
-					});
+						const result = await response.json();
 
-					const result = await response.json();
-
-					console.log("Result:", result);
+						if (result.result.length > 0) {
+							const tconst = result.result[0].tconst;
+							window.location.href = `/view-item/${tconst}`;
+						}
+					} catch (error) {
+						console.error("Error:", error);
+					}
 				});
 		</script>
 	</body>

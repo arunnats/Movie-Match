@@ -26,15 +26,16 @@
 	font-size: 20px;
 }
 
-.searchButton{
-    border: none ;
-    background-color: var(--button-color) ;
-    color: white ;
-    width: 4vw ;
-    height: 4vh ;
-    font-size: 1vw ;
-    padding: 1vh ;
+.searchButton {
+	border: none;
+	background-color: var(--button-color);
+	color: white;
+	width: 4vw;
+	height: 4vh;
+	font-size: 1vw;
+	padding: 1vh;
+}
 
-input::placeholder {
+.input::placeholder {
 	font-size: 20px;
 }

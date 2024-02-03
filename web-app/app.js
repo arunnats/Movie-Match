@@ -47,6 +47,10 @@ app.get("/test", (req, res) => {
 	res.render("search.ejs");
 });
 
+app.get("/results", (req, res) => {
+	res.render("results.ejs");
+});
+
 app.post("/search", async (req, res) => {
 	try {
 		const { query } = req.body;
