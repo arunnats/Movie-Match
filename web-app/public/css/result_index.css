@@ -13,33 +13,6 @@ body {
 	cursor: pointer;
 }
 
-.dark_theme {
-	--header-color: #3b3b3b;
-	--main-color: #161616;
-	--search-color: white;
-	--button-color: rgb(150, 27, 27);
-}
-
-.light_theme {
-	--header-color: rgb(65, 120, 120);
-	--main-color: white;
-	--search-color: rgb(65, 120, 120);
-	--button-color: rgb(29, 85, 85);
-}
-
-.header {
-	display: flex;
-	width: 100vw;
-	height: 10vh;
-	background-color: var(--header-color);
-	justify-content: space-between;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	right: 0;
-	left: 0;
-}
-
 .main {
 	margin-top: 15vh;
 }
@@ -48,6 +21,68 @@ body {
 	width: 10vw;
 	height: 20vh;
 	background-color: grey;
+}
+
+.btn.btn-outline-success {
+    color: black;
+}
+
+.navbar.navbar-expand-lg.bg-body-tertiary{
+    padding: 0 ;
+}
+
+:root{
+    --header-color : rgb(73, 134, 73) ;
+    --body-color: white ;
+    --search-color: rgb(14, 81, 5);
+}
+
+.dark_theme{
+    --header-color: rgb(67, 66, 66) ;
+    --body-color: rgb(39, 38, 38) ;
+    --search-color:rgb(131, 11, 11) ;
+}
+
+#theme{
+    width: 5vw ;
+    height: 5vh ;
+    cursor: pointer;
+}
+
+.container-fluid{
+    background-color: var(--header-color) ;
+    height: 8vh ;
+}
+
+body {
+    background-color: var(--body-color);
+}
+
+.navbar-nav .nav-link {
+    color: white ;
+    font-size: 18px; 
+}
+
+.navbar-brand {
+    color: white; 
+    font-size: 18px; 
+}
+  
+.navbar-nav .nav-link.active {
+    color: white ; 
+    font-size: 18px; 
+}
+
+.d-flex .btn.btn-outline-success{
+    background-color: var(--search-color); 
+    color: white ; 
+    font-size: 18px;
+    border: none ;
+    border-radius: 0 ;
+}
+
+.d-flex .form-control.me-2{
+    border-radius: 0 ;
 }
 
 .streaming-logo {
