@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>movie-watch</title>
+		<link rel="stylesheet" href="/css/searchbar.css" />
+		<link rel="stylesheet" href="/css/test.css" />
+		<link rel="stylesheet" href="/css/theme.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<div class="header">
+			<div class=".theme_hold">
+				<svg id="theme" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<title>weather-night</title>
+					<path
+						d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z"
+					/>
+				</svg>
+			</div>
+		</div>
+
+		<div class="main">
+			<form
+				class="search"
+				action="#"
+				id="searchForm"
+				style="position: relative"
+			>
+				<div class="iconSearch"><i class="fa fa-search"></i></div>
+				<input
+					type="text"
+					placeholder="Search.."
+					class="bar"
+					id="searchInput"
+					oninput="showResult(this.value)"
+				/>
+				<div id="livesearch"></div>
+			</form>
+		</div>
+
+		<script>
+			document.body.classList.add("dark_theme");
+
+			document.getElementById("theme").addEventListener("click", () => {
+				document.body.classList.toggle("light_theme");
+			});
+
+			async function showResult(str) {
+				if (str.length === 0) {
+					$("#livesearch").addClass("hide");
+				} else {
+					$("#livesearch").removeClass("hide");
+				}
+
+				try {
+					const response = await fetch("/search", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ query: str }),
+					});
+
+					if (!response.ok) {
+						throw new Error(`HTTP error! status: ${response.status}`);
+					}
+
+					const result = await response.json();
+
+					console.log("Result:", result);
+
+					if (result && result.response) {
+						const livesearch = $("#livesearch");
+						livesearch.empty();
+
+						// Display the first 5 results below the search bar
+						for (let i = 0; i < Math.min(5, result.response.length); i++) {
+							const item = result.response[i];
+							console.log("item:", item);
+							const resultElement = $("<div>").text(
+								`${item.tconst} - ${item.title}`
+							);
+							livesearch.append(resultElement);
+						}
+					}
+				} catch (error) {
+					console.error("Error:", error);
+				}
+			}
+
+			document
+				.getElementById("searchForm")
+				.addEventListener("submit", async function (event) {
+					event.preventDefault();
+
+					const searchQuery = document.getElementById("searchInput").value;
+
+					console.log("searchQuery:", searchQuery);
+
+					const response = await fetch("/search", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ query: searchQuery }),
+					});
+
+					const result = await response.json();
+
+					console.log("Result:", result);
+				});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;300;500&family=Open+Sans&family=Roboto+Slab:wght@300&display=swap");
+
+* {
+	font-family: "Roboto Slab", serif;
+}
+
+html {
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-image: url("/neutral.png");
+	margin: 0;
+	min-height: 100vh;
+	text-align: center;
+}
+
+p {
+	line-height: 1;
+}
+
+li {
+	list-style: none;
+}
+
+.live-filter {
+	width: 35rem;
+	box-shadow: 1rem 1rem 3rem 0.5rem rgb(173, 170, 170);
+	border-radius: 2rem;
+	margin: 3rem 0;
+}
+
+.search {
+	background-color: #50483b;
+	color: white;
+	padding: 2.5rem;
+	border-top-left-radius: 1rem;
+	border-top-right-radius: 1rem;
+}
+
+.search p:first-child {
+	font-weight: bold;
+	font-size: 1.75rem;
+}
+
+.search p:last-of-type {
+	font-weight: lighter;
+	margin: 0.4rem 0 1.6rem 0;
+}
+
+.search input {
+	padding: 0.5rem;
+	border: none;
+	outline: none;
+	box-shadow: 1rem 1rem 5rem 0.2rem #d4c4ac;
+	color: #50483b;
+	font-weight: bold;
+}
+
+#user {
+	border-radius: 5px;
+}
+
+.user-info {
+	background-color: #d4c4ac;
+	color: #50483b;
+	padding: 2rem;
+	height: 20rem;
+	overflow-y: auto;
+	border-bottom-left-radius: 1rem;
+	border-bottom-right-radius: 1rem;
+}
+
+.user-list {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.user-data {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	font-weight: bold;
+	color: #50483b;
+	padding: 1rem;
+	gap: 1rem;
+	box-shadow: 1rem 1rem 5rem 1rem #dfd6c7;
+	border-radius: 1rem;
+}
+
+.user-data img {
+	max-width: 100%;
+	height: auto;
+	width: 6rem;
+	border-radius: 50%;
+}
+
+.user-data div {
+	text-align: start;
+}
+
+.user-data p {
+	text-transform: capitalize;
+}
+
+.hide {
+	display: none;
+}
+
+a {
+	color: #443a29;
+}
+
+a:hover {
+	color: #706b64;
+}
