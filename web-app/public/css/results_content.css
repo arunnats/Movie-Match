@@ -17,7 +17,7 @@
 }
 
 .movie-cards {
-	height: 50vh; /* 30% of the viewport height */
+	height: 55vh; /* 30% of the viewport height */
 	width: 15vw; /* 25% of the viewport width */
 	border-radius: 5px;
 	border: 2px solid #402e32;
@@ -46,7 +46,7 @@
 }
 
 .card-content h6 {
-	font-size: 1vw; /* 2% of the viewport width */
+	font-size: 0.8vw; /* 2% of the viewport width */
 	margin-bottom: 1vh; /* 1% of the viewport height */
 	margin-left: 1vw; /* 1% of the viewport width */
 	margin-right: 1vw; /* 1% of the viewport width */

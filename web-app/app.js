@@ -17,16 +17,12 @@ app.use(
 	})
 );
 
-// Replace bodyParser middleware with express.json()
 app.use(express.json());
 
 const mongoConnectionString = config.mongo_connection_string;
 const dbName = config.mongo_database_name;
 
-const client = new MongoClient(mongoConnectionString, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+const client = new MongoClient(mongoConnectionString);
 
 let cachedMovies = [];
 
@@ -81,7 +77,14 @@ app.post("/search", async (req, res) => {
 				tconst: item.tconst,
 				title: item.Title,
 				poster: item.Poster,
+				year: item.Year,
 				posteralt: item.PosterAlt,
+				language: item.Language,
+				genre: item.Genre,
+				imdb: item.IMDBRating,
+				rt: item.RottenTomatoesRating,
+				streaming: item.StreamingService[0]?.StreamingService,
+				streamingLogo: item.StreamingService[0]?.LogoPath,
 			}))
 			.filter((movie) => !(movie.poster === "N/A" && movie.posteralt === ""));
 
@@ -158,8 +161,12 @@ app.post("/adv-search", async (req, res) => {
 					Title,
 					Poster,
 					PosterAlt,
-					RottenTomatoesRating,
+					Language,
+					Genre,
 					IMDBRating,
+					RottenTomatoesRating,
+					StreamingService,
+					Year,
 				}) => {
 					// Convert ratings to numeric values, replacing '%' in Rotten Tomatoes Rating
 					const rtRating = RottenTomatoesRating
@@ -175,6 +182,13 @@ app.post("/adv-search", async (req, res) => {
 						title: Title,
 						poster: Poster,
 						posteralt: PosterAlt,
+						language: Language,
+						genre: Genre,
+						imdb: IMDBRating,
+						rt: RottenTomatoesRating,
+						streaming: StreamingService[0]?.StreamingService,
+						streamingLogo: StreamingService[0]?.LogoPath,
+						year: Year,
 						weightedRating,
 					};
 				}
