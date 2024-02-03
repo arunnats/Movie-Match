@@ -53,9 +53,15 @@
 			});
 
 			document
-				.getElementById("viewItemButton")
-				.addEventListener("click", async function () {
+				.getElementById("searchForm")
+				.addEventListener("submit", async function (event) {
+					event.preventDefault();
+
 					const searchQuery = document.getElementById("searchInput").value;
+
+					if (!searchQuery.trim()) {
+						return;
+					}
 
 					try {
 						const response = await fetch("/search", {

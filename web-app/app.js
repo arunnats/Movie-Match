@@ -69,7 +69,10 @@ app.post("/search", async (req, res) => {
 		const { query } = req.body;
 		console.log("Received query:", query);
 
-		const fuse = new Fuse(cachedMovies, fuseOptions);
+		const fuse = new Fuse(
+			cachedMovies.filter((movie) => !movie.Genre.includes("Adult")),
+			fuseOptions
+		);
 
 		const searchResults = fuse.search(query).slice(0, 100);
 
@@ -136,3 +139,22 @@ app.get("/results", (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 });
+
+app.get("/view-info/:tconst", (req, res) => {
+	try {
+		const { tconst } = req.params;
+
+		const movieDetails = findMovieDetailsInLocalCache(tconst);
+
+		res.render("movie-details.ejs", { movieDetails });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
+function findMovieDetailsInLocalCache(tconst) {
+	const cachedMovie = cachedMovies.find((movie) => movie.tconst === tconst);
+
+	return cachedMovie;
+}
