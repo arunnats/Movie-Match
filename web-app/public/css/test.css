@@ -4,18 +4,23 @@ body{
     padding: 0;
 }
 
+button{
+    width: 5vw;
+
+}
 .header{ 
     display: flex ;
     width: 100vw ;
     height: 10vh;
     background-color: var(--header-color) ;
-    justify-content: right ;
+    justify-content: space-between ;
     align-items: center ;
     position: fixed ;
 }
 
 .main{ 
     display: flex ;
+    flex-direction: column;
     width: 100vw ;
     height: 100vh ;
     background-color: var(--main-color) ;
@@ -23,3 +28,17 @@ body{
     align-items: center ;
 }
 
+.filters{
+    display: flex ;
+    width: 20vw ;
+    margin-right: 5vw ;
+    justify-content: space-between;
+}
+
+
+.additional_search{
+    display: flex ;
+    justify-content: space-between;
+    width: 15vw ;
+    margin-top: 10vh ;
+}
