@@ -5,6 +5,10 @@ const { MongoClient } = require("mongodb");
 const config = require("./config.json");
 const session = require("express-session");
 const crypto = require("crypto");
+const OpenAI = require("openai");
+
+const openai_key = config.openai_key;
+const openai = new OpenAI({ apiKey: openai_key });
 
 const app = express();
 const port = 3000;
@@ -26,11 +30,31 @@ const client = new MongoClient(mongoConnectionString);
 
 let cachedMovies = [];
 
-const updateCache = async () => {
+async function updateCache() {
 	const database = client.db(dbName);
 	const collection = database.collection("movies");
-	cachedMovies = await collection.find().toArray();
-};
+
+	const totalMovies = await collection.countDocuments();
+	const batchSize = 100;
+	const batches = Math.ceil(totalMovies / batchSize);
+	const fetchPromises = [];
+
+	for (let i = 0; i < batches; i++) {
+		const skip = i * batchSize;
+		const limit = batchSize;
+
+		fetchPromises.push(collection.find().skip(skip).limit(limit).toArray());
+	}
+
+	try {
+		const batchResults = await Promise.all(fetchPromises);
+		cachedMovies = batchResults.flat();
+
+		console.log("Cache updated successfully");
+	} catch (error) {
+		console.error("Error updating cache:", error);
+	}
+}
 
 const fuseOptions = {
 	keys: ["Title"],
@@ -38,7 +62,9 @@ const fuseOptions = {
 
 async function initialize() {
 	try {
+		console.log("Connecting to Mongo");
 		await client.connect();
+		console.log("Updating cache");
 		await updateCache();
 		app.listen(port, () => {
 			console.log(`Server is running at http://localhost:${port}`);
@@ -103,9 +129,14 @@ app.post("/search", async (req, res) => {
 
 app.post("/adv-search", async (req, res) => {
 	try {
-		const { genre, language, ott, rating } = req.body.options;
+		// Ensure ott, language, genre, and rating are not empty, if empty, set them to ["All"]
+		const options = req.body.options;
+		const ott = options.ott?.length > 0 ? options.ott : ["All"];
+		const language = options.language?.length > 0 ? options.language : ["All"];
+		const genre = options.genre?.length > 0 ? options.genre : ["All"];
+		const rating = options.rating?.length > 0 ? options.rating : ["All"];
 
-		console.log("Received options:", req.body.options);
+		console.log("Received options:", options);
 
 		let filteredMovies = cachedMovies;
 
@@ -153,7 +184,8 @@ app.post("/adv-search", async (req, res) => {
 			});
 		}
 
-		// Sort by rating with specified weightage
+		// Rest of your code remains unchanged
+
 		const sortedMovies = filteredMovies
 			.map(
 				({
@@ -168,6 +200,12 @@ app.post("/adv-search", async (req, res) => {
 					StreamingService,
 					Year,
 				}) => {
+					// Check if StreamingService is an array and has length
+					const streamingService =
+						Array.isArray(StreamingService) && StreamingService.length > 0
+							? StreamingService[0]?.StreamingService
+							: "All";
+
 					// Convert ratings to numeric values, replacing '%' in Rotten Tomatoes Rating
 					const rtRating = RottenTomatoesRating
 						? parseFloat(RottenTomatoesRating.replace("%", ""))
@@ -186,7 +224,7 @@ app.post("/adv-search", async (req, res) => {
 						genre: Genre,
 						imdb: IMDBRating,
 						rt: RottenTomatoesRating,
-						streaming: StreamingService[0]?.StreamingService,
+						streaming: streamingService,
 						streamingLogo: StreamingService[0]?.LogoPath,
 						year: Year,
 						weightedRating,
@@ -272,6 +310,94 @@ app.get("/adv-results", (req, res) => {
 
 app.get("/advanced-search", (req, res) => {
 	res.render("advanced-search.ejs");
+});
+
+app.get("/genres", async (req, res) => {
+	try {
+		const genres = [
+			"Comedy",
+			"Action",
+			"Thriller",
+			"Horror",
+			"Adventure",
+			"Fantasy",
+			"Mystery",
+			"Crime",
+			"Animation",
+			"Documentary",
+		];
+		const genreResults = {};
+
+		for (const genre of genres) {
+			const url = "http://localhost:3000/adv-search";
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					options: {
+						genre: [genre],
+						language: [],
+						ott: ["All"],
+						rating: [],
+					},
+				}),
+			});
+
+			const { searchId } = await response.json();
+
+			const searchResults = req.session[searchId];
+
+			const sortedMovies = searchResults
+				.filter((movie) => !(movie.poster === "N/A" && movie.posteralt === ""))
+				.slice(0, 30); // Limit to the top 30 movies for each genre
+
+			// Shuffle and take 6 random movies for each genre
+			const randomMovies = shuffleArray(sortedMovies).slice(0, 6);
+
+			genreResults[genre] = randomMovies;
+		}
+
+		res.render("genres.ejs", { genreResults });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
+app.post("/getrecommendations", async (req, res) => {
+	try {
+		const { movie1, movie2, movie3, movie4, keyword1, keyword2 } = req.body;
+
+		const prompt = `Recommend movies similar to ${movie1}, ${movie2}, ${movie3}, ${movie4} with keywords ${keyword1} and ${keyword2}.`;
+
+		const response = await openai.chat.completions.create({
+			model: "gpt-4-0125-preview",
+			messages: [
+				{
+					role: "system",
+					content:
+						"You are a movie recommendation generator. Tou will always outpur 10 movies based on the prompt and your format will be a json file in this format: {'movienames':['movie1','movie2','movie3','movie4','movie5','movie6','movie7','movie8','movie9','movie10',]}. You will replace the movie1 to movie 10 with your recommendations. Your ouput should always strcitly be as specified. You will generate movies recs based on the similar language, actors, cinematic universe, genre and themes along with other factors",
+				},
+				{
+					role: "user",
+					content: prompt,
+				},
+			],
+		});
+
+		const movieNames = response.data.choices[0].message.content
+			.trim()
+			.split("\n");
+
+		console.log(movieNames);
+
+		res.json(movieNames);
+	} catch (error) {
+		console.error(error);
+		res.status(500).send("An error occurred while getting recommendations.");
+	}
 });
 
 app.get("/recommendations", (req, res) => {
