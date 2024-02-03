@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>movie-watch</title>
-		<link rel="stylesheet" href="../css/searchbar.css" />
-		<link rel="stylesheet" href="../css/test.css" />
-		<link rel="stylesheet" href="../css/theme.css" />
+		<link rel="stylesheet" href="/css/searchbar.css" />
+		<link rel="stylesheet" href="/css/test.css" />
+		<link rel="stylesheet" href="/css/theme.css" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 		/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	</head>
+
 	<body>
 		<div class="header">
-			<div class=".theme_hold">
+			<div class="theme_hold">
 				<svg id="theme" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 					<title>weather-night</title>
 					<path
@@ -23,29 +27,58 @@
 		</div>
 
 		<div class="main">
-			<form class="search" action="">
+			<form
+				class="search"
+				action="#"
+				id="searchForm"
+				style="position: relative"
+			>
 				<div class="iconSearch"><i class="fa fa-search"></i></div>
-				<input type="text" placeholder="Search.." class="bar" />
-				<div
-					style="
-						width: 15%;
-						height: 99%;
-						background-color: white;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-					"
-				>
-					<button class="searchButton">Search</button>
-				</div>
+				<input
+					type="text"
+					placeholder="Search.."
+					class="bar"
+					id="searchInput"
+				/>
+				<div id="searchResults"></div>
+				<button id="viewItemButton">View Item</button>
 			</form>
 		</div>
+
 		<script>
 			document.body.classList.add("dark_theme");
 
 			document.getElementById("theme").addEventListener("click", () => {
 				document.body.classList.toggle("light_theme");
 			});
+
+			document
+				.getElementById("searchForm")
+				.addEventListener("submit", async function (event) {
+					event.preventDefault();
+
+					const searchQuery = document.getElementById("searchInput").value;
+
+					if (!searchQuery.trim()) {
+						return;
+					}
+
+					try {
+						const response = await fetch("/search", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ query: searchQuery }),
+						});
+
+						const { searchId } = await response.json();
+
+						window.location.href = `/results?searchId=${searchId}`;
+					} catch (error) {
+						console.error("Error:", error);
+					}
+				});
 		</script>
 	</body>
 </html>
