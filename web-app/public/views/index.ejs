@@ -39,7 +39,6 @@
 					placeholder="Search.."
 					class="bar"
 					id="searchInput"
-					oninput="showResult(this.value)"
 				/>
 				<div id="searchResults"></div>
 				<button id="viewItemButton">View Item</button>
@@ -67,12 +66,9 @@
 							body: JSON.stringify({ query: searchQuery }),
 						});
 
-						const result = await response.json();
+						const { searchId } = await response.json();
 
-						if (result.result.length > 0) {
-							const tconst = result.result[0].tconst;
-							window.location.href = `/view-item/${tconst}`;
-						}
+						window.location.href = `/results?searchId=${searchId}`;
 					} catch (error) {
 						console.error("Error:", error);
 					}

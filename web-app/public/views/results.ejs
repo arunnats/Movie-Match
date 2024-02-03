@@ -7,6 +7,7 @@
 		<title>movie-watch</title>
 		<link rel="stylesheet" href="../css/result_searchbar.css" />
 		<link rel="stylesheet" href="../css/result_index.css" />
+		<link rel="stylesheet" href="../css/results_content.css" />
 		<link rel="stylesheet" href="../css/result_filter_bar.css" />
 		<link
 			rel="stylesheet"
@@ -32,105 +33,74 @@
 				</svg>
 			</div>
 
-			<!-- serach and filters -->
-			<div class="search_filters">
-				<!-- filters -->
-				<div class="container">
-					<div class="select-btn">
-						<span class="btn-text">genre</span>
-						<span class="arrow-dwn">
-							<i class="fa-solid fa-chevron-down"></i>
-						</span>
-					</div>
-					<ul class="list-items">
-						<li class="item">
-							<span class="checkbox">
-								<i class="fa-solid fa-check check-icon"></i>
-							</span>
-							<span class="item-text">comedy</span>
-						</li>
-						<li class="item">
-							<span class="checkbox">
-								<i class="fa-solid fa-check check-icon"></i>
-							</span>
-							<span class="item-text">drama</span>
-						</li>
-						<li class="item">
-							<span class="checkbox">
-								<i class="fa-solid fa-check check-icon"></i>
-							</span>
-							<span class="item-text">action</span>
-						</li>
-						<li class="item">
-							<span class="checkbox">
-								<i class="fa-solid fa-check check-icon"></i>
-							</span>
-							<span class="item-text">thriller</span>
-						</li>
-						<li class="item">
-							<span class="checkbox">
-								<i class="fa-solid fa-check check-icon"></i>
-							</span>
-							<span class="item-text">romance</span>
-						</li>
-						<li class="item">
-							<span class="checkbox">
-								<i class="fa-solid fa-check check-icon"></i>
-							</span>
-							<span class="item-text">Action</span>
-						</li>
-					</ul>
-				</div>
-				<!-- seach bar -->
-				<div class="search">
-					<div class="icon"><i class="fa fa-search"></i></div>
-					<input type="text" placeholder="Search.." class="bar" />
-					<button class="searchButton">Search</button>
-				</div>
+			<div class="search">
+				<div class="icon"><i class="fa fa-search"></i></div>
+				<input
+					type="text"
+					placeholder="Search.."
+					class="bar"
+					id="searchInput"
+				/>
+				<div id="searchResults"></div>
+				<button id="searchButton">Search</button>
 			</div>
 		</div>
 
 		<div class="main">
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
-			<div class="movie-box">3</div>
+			<div class="content-container">
+				<h1>Results</h1>
+				<div class="movie-cards-container">
+					<% searchResults.forEach(movie => { %>
+					<div class="movie-cards">
+						<img
+							src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
+							alt="Image"
+						/>
+						<div class="card-content">
+							<h6><%= movie.title %></h6>
+							<a href="/view-info/<%= movie.tconst %>"
+								><button>Read Post</button></a
+							>
+						</div>
+					</div>
+					<% }); %>
+				</div>
+			</div>
 		</div>
+
 		<script>
-			const selectBtn = document.querySelector(".select-btn"),
-				items = document.querySelectorAll(".item");
-			selectBtn.addEventListener("click", () => {
-				selectBtn.classList.toggle("open");
-			});
-			items.forEach((item) => {
-				item.addEventListener("click", () => {
-					item.classList.toggle("checked");
-					let checked = document.querySelectorAll(".checked"),
-						btnText = document.querySelector(".btn-text");
-					if (checked && checked.length > 0) {
-						btnText.innerText = `${checked.length} Selected`;
-					} else {
-						btnText.innerText = "Select Language";
-					}
-				});
-			});
 			document.body.classList.add("dark_theme");
 
 			document.getElementById("theme").addEventListener("click", () => {
 				document.body.classList.toggle("light_theme");
 			});
+
+			document
+				.getElementById("searchButton")
+				.addEventListener("click", async function () {
+					const searchQuery = document.getElementById("searchInput").value;
+
+					// If the search bar is empty, do nothing
+					if (!searchQuery.trim()) {
+						return;
+					}
+
+					try {
+						const response = await fetch("/search", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ query: searchQuery }),
+						});
+
+						const { searchId } = await response.json();
+
+						window.location.href = `/results?searchId=${searchId}`;
+					} catch (error) {
+						console.error("Error:", error);
+					}
+				});
 		</script>
 	</body>
 </html>
