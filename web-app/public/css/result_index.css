@@ -13,20 +13,6 @@ body {
 	cursor: pointer;
 }
 
-.dark_theme {
-	--header-color: #3b3b3b;
-	--main-color: #161616;
-	--search-color: white;
-	--button-color: rgb(150, 27, 27);
-}
-
-.light_theme {
-	--header-color: rgb(65, 120, 120);
-	--main-color: white;
-	--search-color: rgb(65, 120, 120);
-	--button-color: rgb(29, 85, 85);
-}
-
 .main {
 	margin-top: 15vh;
 }
@@ -97,4 +83,10 @@ body {
 
 .d-flex .form-control.me-2{
     border-radius: 0 ;
+}
+
+.streaming-logo {
+	width: 20px;
+	height: auto;
+	margin-right: 5px;
 }
