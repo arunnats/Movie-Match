@@ -98,6 +98,105 @@ app.post("/search", async (req, res) => {
 	}
 });
 
+app.post("/adv-search", async (req, res) => {
+	try {
+		const { genre, language, ott, rating } = req.body.options;
+
+		console.log("Received options:", req.body.options);
+
+		let filteredMovies = cachedMovies;
+
+		// Apply genre filter if options are selected
+		if (genre.length > 0) {
+			filteredMovies = filteredMovies.filter((movie) => {
+				const movieGenres = movie.Genre.split(", ").map((g) => g.trim());
+				return (
+					genre.includes("All") || genre.some((g) => movieGenres.includes(g))
+				);
+			});
+		}
+
+		// Apply language filter if options are selected
+		if (language.length > 0) {
+			filteredMovies = filteredMovies.filter((movie) => {
+				return language.includes("All") || language.includes(movie.Language);
+			});
+		}
+
+		// Apply OTT filter if options are selected
+		if (ott.length > 0) {
+			filteredMovies = filteredMovies.filter((movie) => {
+				return (
+					ott.includes("All") ||
+					(movie.StreamingService &&
+						ott.some((o) =>
+							movie.StreamingService.some(
+								(service) => service.StreamingService === o
+							)
+						))
+				);
+			});
+		}
+
+		// Apply rating filter if options are selected
+		if (rating.length > 0) {
+			filteredMovies = filteredMovies.filter((movie) => {
+				return (
+					rating.includes("All") ||
+					rating.includes(movie.Rated) ||
+					(rating.includes("18+") &&
+						(movie.Rated === "18" || movie.Rated === "R"))
+				);
+			});
+		}
+
+		// Sort by rating with specified weightage
+		const sortedMovies = filteredMovies
+			.map(
+				({
+					tconst,
+					Title,
+					Poster,
+					PosterAlt,
+					RottenTomatoesRating,
+					IMDBRating,
+				}) => {
+					// Convert ratings to numeric values, replacing '%' in Rotten Tomatoes Rating
+					const rtRating = RottenTomatoesRating
+						? parseFloat(RottenTomatoesRating.replace("%", ""))
+						: 0;
+					const imdbRating = IMDBRating ? parseFloat(IMDBRating) : 0;
+
+					// Calculate weighted average rating
+					const weightedRating = (2 * rtRating + 1.5 * imdbRating) / 3.5;
+
+					return {
+						tconst,
+						title: Title,
+						poster: Poster,
+						posteralt: PosterAlt,
+						weightedRating,
+					};
+				}
+			)
+			.filter((movie) => !(movie.poster === "N/A" && movie.posteralt === ""))
+			.sort((a, b) => b.weightedRating - a.weightedRating) // Sort by descending weighted rating
+			.slice(0, 100); // Limit the responses to the first 100
+
+		console.log("Search Results:", sortedMovies);
+
+		const searchId =
+			sortedMovies.length > 0 ? crypto.randomBytes(8).toString("hex") : "0";
+
+		req.session[searchId] = sortedMovies;
+
+		res.json({ searchId });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
 app.post("/searchCall", async (req, res) => {
 	try {
 		const { query } = req.body;
@@ -138,6 +237,31 @@ app.get("/results", (req, res) => {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
+});
+
+app.get("/adv-results", (req, res) => {
+	try {
+		const { searchId } = req.query;
+
+		console.log("Received searchId:", searchId);
+
+		const searchResults = req.session[searchId];
+
+		console.log("Retrieved search results from session:", searchResults);
+
+		res.render("results.ejs", { searchResults });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
+app.get("/advanced-search", (req, res) => {
+	res.render("advanced-search.ejs");
+});
+
+app.get("/recommendations", (req, res) => {
+	res.render("recommendations.ejs");
 });
 
 app.get("/view-info/:tconst", (req, res) => {

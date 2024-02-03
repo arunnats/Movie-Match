@@ -74,9 +74,15 @@
 
 						const { searchId } = await response.json();
 
-						window.location.href = `/results?searchId=${searchId}`;
+						if (searchId === "0") {
+							alert("No results found. Please try a different combination.");
+						} else {
+							window.location.href = `/results?searchId=${searchId}`;
+						}
 					} catch (error) {
 						console.error("Error:", error);
+						// Handle error, show alert or redirect to an error page
+						alert("An error occurred. Please try again later.");
 					}
 				});
 		</script>
