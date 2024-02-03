@@ -46,6 +46,7 @@ body{
     margin-right: 0 ;
     margin-top: 20vh ;
     justify-content: center ;
+    position: relative;
 }
 
 .buttonDiv{
@@ -54,6 +55,7 @@ body{
     margin-top: 50vh ;
     margin: 20vh ;
 }
+
 /* creating drop dowm */
 .container {
     position: relative;
