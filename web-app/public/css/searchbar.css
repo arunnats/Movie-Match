@@ -34,7 +34,7 @@
     height: 4vh ;
     font-size: 1vw ;
     padding: 1vh ;
-
+}
 input::placeholder {
 	font-size: 20px;
 }
