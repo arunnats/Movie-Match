@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>movie-watch</title>
 		<link rel="stylesheet" href="/css/searchbar.css" />
 		<link rel="stylesheet" href="/css/test.css" />
@@ -10,7 +11,9 @@
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 		/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	</head>
+
 	<body>
 		<div class="header">
 			<div class=".theme_hold">
@@ -24,7 +27,12 @@
 		</div>
 
 		<div class="main">
-			<form class="search" action="#" id="searchForm">
+			<form
+				class="search"
+				action="#"
+				id="searchForm"
+				style="position: relative"
+			>
 				<div class="iconSearch"><i class="fa fa-search"></i></div>
 				<input
 					type="text"
@@ -33,21 +41,10 @@
 					id="searchInput"
 					oninput="showResult(this.value)"
 				/>
-				<div
-					style="
-						width: 15%;
-						height: 99%;
-						background-color: white;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-					"
-				>
-					<!-- <button class="searchButton" id="searchButton">Search</button> -->
-					<button class="" id="searchButton">Search</button>
-				</div>
+				<div id="livesearch"></div>
 			</form>
 		</div>
+
 		<script>
 			document.body.classList.add("dark_theme");
 
@@ -57,9 +54,9 @@
 
 			async function showResult(str) {
 				if (str.length === 0) {
-					document.getElementById("searchForm").classList.add("hide");
+					$("#livesearch").addClass("hide");
 				} else {
-					document.getElementById("searchForm").classList.remove("hide");
+					$("#livesearch").removeClass("hide");
 				}
 
 				try {
@@ -71,9 +68,28 @@
 						body: JSON.stringify({ query: str }),
 					});
 
+					if (!response.ok) {
+						throw new Error(`HTTP error! status: ${response.status}`);
+					}
+
 					const result = await response.json();
 
-					document.getElementById("searchForm").innerHTML = result.response;
+					console.log("Result:", result);
+
+					if (result && result.response) {
+						const livesearch = $("#livesearch");
+						livesearch.empty();
+
+						// Display the first 5 results below the search bar
+						for (let i = 0; i < Math.min(5, result.response.length); i++) {
+							const item = result.response[i];
+							console.log("item:", item);
+							const resultElement = $("<div>").text(
+								`${item.tconst} - ${item.title}`
+							);
+							livesearch.append(resultElement);
+						}
+					}
 				} catch (error) {
 					console.error("Error:", error);
 				}

@@ -43,6 +43,10 @@ app.get("/", (req, res) => {
 	res.render("index.ejs");
 });
 
+app.get("/test", (req, res) => {
+	res.render("search.ejs");
+});
+
 app.post("/search", async (req, res) => {
 	try {
 		const { query } = req.body;
@@ -57,6 +61,7 @@ app.post("/search", async (req, res) => {
 			title: item.Title,
 		}));
 
+		// console.log(result);
 		res.json({ result });
 	} catch (error) {
 		console.error(error);
