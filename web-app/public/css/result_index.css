@@ -49,3 +49,9 @@ body {
 	height: 20vh;
 	background-color: grey;
 }
+
+.streaming-logo {
+	width: 20px;
+	height: auto;
+	margin-right: 5px;
+}
