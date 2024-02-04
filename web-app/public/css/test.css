@@ -3,7 +3,6 @@
 	flex-direction: column;
 	display: flex;
 	align-items: center;
-	justify-content: center;
 }
 
 #theme {
@@ -43,7 +42,7 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 8vh;
+	margin-top: 10px;
 }
 
 .btn.btn-secondary.btn-lg {
@@ -73,12 +72,12 @@ body {
 	border: none;
 }
 
-.navbar {
-	/* height: 70px; Set a fixed height for the navbar */
-}
-
 .navbar.navbar-expand-lg {
 	padding: 0;
+}
+
+.container-fluid {
+	background-color: green !important;
 }
 
 .navbar-toggler {
@@ -139,8 +138,25 @@ body {
 	height: auto;
 	margin-right: 5px;
 }
-
-/* Add this rule for z-index on the dropdown menu */
 .navbar-nav {
-	z-index: 1000; /* or any value higher than other elements */
+	z-index: 1000;
+}
+
+.hero-img {
+	width: 60vw;
+}
+
+.info-paragraph {
+	text-align: center;
+	margin-top: 20px;
+	padding: 20px;
+	width: 50vw;
+	background-color: var(--header-color);
+	border-radius: 10px;
+}
+
+@media (max-width: 1000px) {
+	.hero-img {
+		width: 90vw;
+	}
 }
