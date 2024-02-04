@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<title>movie-watch</title>
+		<title>Movie Match</title>
 		<link
 			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
 			rel="stylesheet"
@@ -19,6 +19,9 @@
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="cssfiles/test.css" />
 		<link
@@ -27,6 +30,7 @@
 		/>
 		<link rel="stylesheet" href="/css/searchbar.css" />
 		<link rel="stylesheet" href="/css/test.css" />
+		<link rel="icon" href="/images/logo_navbar.png" type="image/png">
 	</head>
 
 	<body>
@@ -161,28 +165,76 @@
 			</div>
 		</header>
 
-		<div class="main" style="padding-top: 70px">
-			<img src="../images/hero.png" style="width: 60vw" class="my-4" alt="" />
+		<div class="main" style="padding-top: 20px">
+			<img src="../images/hero.png" class="my-4 hero-img" alt="" />
 			<div class="input-box" id="searchForm">
 				<i class="uil uil-search"></i>
 				<input type="text" placeholder="Search here..." id="searchInput" />
 				<button class="button" id="searchButton">Search</button>
 			</div>
+			<div class="info-paragraph">
+				<p>
+					Welcome to Movie-Match, your go-to source for movie information! We
+					provide comprehensive data from IMDb, including details on where to
+					stream movies, IMDb ratings, and Rotten Tomatoes scores. Our mission
+					is to make your movie-watching experience enjoyable and hassle-free.
+					Explore, discover, and find the perfect movie for your next cinematic
+					adventure!
+					<br />
+					Our Recommendations allows you to use the power of AI✨ to generate
+					movies best suited for you and the Advanced search allows you to
+					search movies based on many comprehensive filter, such as Language,
+					Streamimg Service and more!
+				</p>
+			</div>
 			<div class="buttonDiv">
 				<a href="/recommendations"
-					><button
-						type="button"
-						class="btn btn-secondary btn-lg"
-						style="margin-right: 50px"
-					>
+					><button type="button" class="btn btn-secondary btn-lg">
 						Recommendations
 					</button></a
 				>
+				<div style="margin-right: 80px"></div>
 				<a href="/advanced-search"
 					><button type="button" class="btn btn-secondary btn-lg">
 						Advanced search
 					</button></a
 				>
+			</div>
+		</div>
+
+		<div class="pt-3 mt-4">
+			<div class="container" bis_skin_checked="1">
+				<footer
+					class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top"
+				>
+					<div class="col-md-4 d-flex align-items-center" bis_skin_checked="1">
+						<a
+							href="/"
+							class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
+						>
+							<svg class="bi" width="30" height="24">
+								<use xlink:href="#bootstrap"></use>
+							</svg>
+						</a>
+						<span class="mb-3 mb-md-0 text-body-secondary"></span>
+							2024 Movie-Match</span
+						>
+					</div>
+
+					<ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+						<li class="ms-3">
+							<a
+								class="text-body-secondary"
+								href="https://github.com/arunnats/movie-match"
+								target="_blank"
+							>
+								<svg class="bi" width="24" height="24">
+									<use xlink:href="#github"></use>
+								</svg>
+							</a>
+						</li>
+					</ul>
+				</footer>
 			</div>
 		</div>
 
