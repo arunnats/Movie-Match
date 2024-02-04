@@ -34,6 +34,7 @@ async function updateCache() {
 	const database = client.db(dbName);
 	const collection = database.collection("movies");
 
+
 	const totalMovies = await collection.countDocuments();
 	const batchSize = 100;
 	const batches = Math.ceil(totalMovies / batchSize);
