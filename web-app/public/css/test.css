@@ -1,22 +1,24 @@
-button{
-    width: 5vw;
+.main{ 
+    min-height: 100vh;
+    flex-direction: column ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.main{ 
-    display: flex ;
-    flex-direction: column;
-    width: 100vw ;
-    justify-content: center ;
-    align-items: center ;
+#theme{
+    width: 50px; 
+    height: 50px ;
+    padding-right: 20p ;
+}
+
+#theme:hover{
+    cursor: pointer ;
 }
 
 body {
 	margin: 0;
 	padding: 0;
-}
-
-.main{
-	margin-top: 15vh;
 }
 
 .movie-box {
@@ -26,17 +28,29 @@ body {
 }
 
 :root{
-    --header-color : rgb(73, 134, 73) ;
-    --body-color: white ;
-    --search-color: rgb(14, 81, 5);
+    --header-color :#3D8498 ;
+    --body-color: #EFFCFF ;
+    --search-color: rgb(61, 132, 152);
 }
 
 .dark_theme{
     --header-color: rgb(67, 66, 66) ;
     --body-color: rgb(39, 38, 38) ;
-    --search-color:rgb(131, 11, 11) ;
+    --search-color:rgb(160, 11, 11) ;
 }
 
+.buttonDiv{
+    display: flex ;
+    align-items: center ;
+    justify-content: space-between ;
+    margin-top: 8vh ;
+}
+
+.btn.btn-secondary.btn-lg{
+    background-color: var(--search-color);
+    border: none ;
+    border-radius: 0 ;
+}
 /*css for nav bar*/
 
 .btn.btn-outline-success {
@@ -60,11 +74,14 @@ body {
 
 body {
     background-color: var(--body-color);
+    border: none ;
 }
 
 .navbar-nav .nav-link {
     color: white ;
-    font-size: 18px; 
+    font-size: 18px;
+    margin-left: 2px ;
+    margin-right: 2px ;
 }
 
 .navbar-brand {
@@ -87,6 +104,15 @@ body {
 
 .d-flex .form-control.me-2{
     border-radius: 0 ;
+}
+
+.navbar-nav li {
+    border-right: 2px solid #ccc; /* Add a right border to each list item */
+    padding-right: 10px; /* Add some padding for better visual separation */
+}
+
+.navbar-nav li:last-child {
+    border-right: none; 
 }
 
 .streaming-logo {
