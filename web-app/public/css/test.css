@@ -147,9 +147,9 @@ body {
 }
 
 .info-paragraph {
-	text-align: center;
+	text-align: justify;
 	margin-top: 20px;
-	padding: 20px;
+	padding: 10px;
 	width: 50vw;
 	background-color: var(--header-color);
 	border-radius: 10px;
