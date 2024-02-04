@@ -79,31 +79,30 @@
 				document.body.classList.toggle("light_theme");
 			});
 
-			function submitRecommendationForm() {
-				const form = document.getElementById("recommendationForm");
-				const formData = new FormData(form);
+			async function submitRecommendationForm() {
+				try {
+					const form = document.getElementById("recommendationForm");
+					const formData = new FormData(form);
 
-				// Convert formData to JSON
-				const jsonObject = {};
-				formData.forEach((value, key) => {
-					jsonObject[key] = value;
-				});
-				console.log(jsonObject);
+					const jsonObject = {};
+					formData.forEach((value, key) => {
+						jsonObject[key] = value;
+					});
 
-				// Send POST request to /getrecommendations
-				fetch("/getrecommendations", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(jsonObject),
-				})
-					.then((response) => response.json())
-					.then((data) => {
-						console.log("Recommendations:", data);
-						// Handle the recommendations as needed
-					})
-					.catch((error) => console.error("Error:", error));
+					const response = await fetch("/getrecommendations", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(jsonObject),
+					});
+
+					const { searchId } = await response.json();
+
+					window.location.replace(`/results?searchId=${searchId}`);
+				} catch (error) {
+					console.error("Error:", error);
+				}
 			}
 		</script>
 	</body>

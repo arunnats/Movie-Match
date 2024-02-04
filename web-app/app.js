@@ -475,6 +475,23 @@ async function performAdvancedSearch(options) {
 	return sortedMovies;
 }
 
+const searchMovies = async (query) => {
+	return new Promise((resolve, reject) => {
+		const fuse = new Fuse(
+			cachedMovies.filter((movie) => !movie.Genre.includes("Adult")),
+			fuseOptions
+		);
+
+		const searchResults = fuse.search(query).slice(0, 1); // Get the top result
+
+		if (searchResults.length > 0) {
+			resolve(searchResults[0].item);
+		} else {
+			resolve(null); // Resolve with null if no match is found
+		}
+	});
+};
+
 app.post("/getrecommendations", async (req, res) => {
 	try {
 		const {
@@ -503,7 +520,7 @@ app.post("/getrecommendations", async (req, res) => {
 				{
 					role: "system",
 					content:
-						"You are a movie recommendation generator. You will always output 30 movies based on the prompt and your format will be a JSON file in this format: {'movienames':['movie1','movie2','movie3','movie4','movie5','movie6','movie7','movie8','movie9','movie10', and so on]}. You will replace the movie1 to movie 10 with your recommendations. Your output should always strictly be as specified. You will generate movies recs based on the similar language, actors, cinematic universe, genre and themes along with other factors, try to have movies from 1981 to the latest you have access to and make sure that atleast 10 are from between 1981 and 2009",
+						"You are a movie recommendation generator. You will always output 15 movies based on the prompt and your format will be a JSON file in this format: {'movienames':['movie1','movie2','movie3','movie4','movie5','movie6','movie7','movie8','movie9','movie10', and so on]}. You will replace the movie1 to movie 10 with your recommendations. Your output should always strictly be as specified. You will generate movies recs based on the similar language, actors, cinematic universe, genre and themes along with other factors, try to have movies from 1981 to the latest you have access to and make sure that at least 10 are from between 1981 and 2009",
 				},
 				{
 					role: "user",
@@ -519,10 +536,21 @@ app.post("/getrecommendations", async (req, res) => {
 
 		console.log(movieNames);
 
-		res.json(movieNames);
+		// Use Promise.all to search for details of each movie name from GPT in parallel
+		const movieDetails = await Promise.all(
+			movieNames.map((movieName) => searchMovies(movieName))
+		);
+
+		console.log("Movie Details:", movieDetails);
+
+		const searchId = crypto.randomBytes(8).toString("hex");
+
+		req.session[searchId] = movieDetails;
+
+		res.json({ searchId });
 	} catch (error) {
 		console.error(error);
-		res.status(500).send("An error occurred while getting recommendations.");
+		res.status(500).json({ error: "Internal Server Error" });
 	}
 });
 
