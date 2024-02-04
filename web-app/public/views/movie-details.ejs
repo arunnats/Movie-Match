@@ -115,7 +115,43 @@
 					</p>
 				</div>
 
-				<div class="poster-details-container"></div>
+				<div class="poster-details-container rounded-border my-4">
+					<div class="poster-ratings">
+						<!-- Poster image goes here -->
+						<img
+							src="<%= movieDetails.Poster %>"
+							alt="<%= movieDetails.PosterAlt %>"
+						/>
+
+						<div
+							class="rating-buttons d-flex flex-column justify-content-center my-2 mx-3"
+						>
+							<a href="https://www.imdb.com/title/<%= movieDetails.tconst %>/"
+								><button type="button" class="btn btn-warning mt-2">
+									<img
+										src="/images/imdb-icon.png"
+										alt="IMDb Logo"
+										width="30"
+										height="30"
+									/>
+									IMDb Rating: <%= movieDetails.IMDBRating %>
+								</button></a
+							>
+
+							<button type="button" class="btn btn-danger mt-2">
+								<img
+									src="/images/rt-icon.png"
+									alt="Rotten Tomatoes Logo"
+									width="30"
+									height="30"
+								/>
+								RT Rating: <%= movieDetails.RottenTomatoesRating %>
+							</button>
+						</div>
+					</div>
+
+					<div class="movie-information"></div>
+				</div>
 
 				<div class="review container">
 					<div
@@ -176,7 +212,7 @@
 				</div>
 
 				<div class="keyword-container">
-					<div class="keywords">
+					<div class="keywords rounded-border">
 						<h3>Keywords:</h3>
 						<ul class="keyword-list">
 							<% movieDetails.Keywords.forEach(keyword => { %>

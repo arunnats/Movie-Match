@@ -20,3 +20,40 @@
 .keyword-list li {
 	margin: 0 10px; /* Adjust the spacing between keywords */
 }
+
+.poster-details-container {
+	display: grid;
+	grid-template-columns: 60% 40%; /* 60-40 split */
+	width: 80%; /* Takes up 80% of the screen width */
+	margin: 0 auto; /* Center the container */
+	gap: 20px; /* Adjust the gap as needed */
+}
+
+.poster-ratings {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.img-fluid {
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+.rating-container {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.rating-container button {
+	border-radius: 50%;
+	margin-right: 5px;
+}
+
+.rounded-border {
+	border: 1px solid black;
+	border-radius: 8px; /* Adjust the radius as needed */
+	padding: 10px; /* Optional: Add padding to the container */
+}
