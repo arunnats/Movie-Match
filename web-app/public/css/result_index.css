@@ -14,21 +14,31 @@ body {
 }
 
 :root{
-    --header-color : rgb(73, 134, 73) ;
-    --body-color: white ;
-    --search-color: rgb(14, 81, 5);
+    --header-color: rgb(42, 39, 39) ;
+    --body-color: rgb(39, 38, 38) ;
+    --search-color:rgb(131, 11, 11) ;
+    --text-color :white ;
+    --input-color : rgb(42, 39, 39); 
 }
 
 .dark_theme{
-    --header-color: rgb(67, 66, 66) ;
-    --body-color: rgb(39, 38, 38) ;
-    --search-color:rgb(131, 11, 11) ;
+    --header-color: #3d8498;
+	--body-color: #effcff;
+	--search-color: rgb(32, 93, 110);
+    --text-color:black ;
+    --input-color : white ; 
 }
 
 /*css for nav bar*/
 
 .btn.btn-outline-success {
     color: black;
+}
+
+.navbar-nav img {
+    width: 40px; 
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .navbar.navbar-expand-lg.bg-body-tertiary{
@@ -41,9 +51,8 @@ body {
     cursor: pointer;
 }
 
-.container-fluid{
+.navbar-color-field{
     background-color: var(--header-color) ;
-    height: 8vh ;
 }
 
 body {
@@ -81,4 +90,19 @@ body {
 	width: 20px;
 	height: auto;
 	margin-right: 5px;
+}
+
+.navbar-nav li {
+    border-right: 2px solid #ccc; 
+    padding-right: 10px; 
+}
+
+.navbar-nav li:last-child {
+    border-right: none; 
+}
+
+.btn.btn-outline-light{
+    background-color: var(--search-color) ;
+    border: none ;
+    border-radius: 0 ;
 }

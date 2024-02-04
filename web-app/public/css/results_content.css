@@ -20,7 +20,7 @@
 	min-width: 200px;
 	flex-basis: calc(15vw - 2vw);
 	border-radius: 5px;
-	border: 2px solid #402e32;
+	border: 2px solid var(--text-color);
 	margin: 1vh;
 	padding: 1vw;
 	display: grid;
@@ -210,4 +210,18 @@
 	.movie-cards img {
 		max-height: 120px; /* Adjust as needed for image size */
 	}
+}
+
+.content-container h1,
+.genre-section h2,
+.card-content h6 ,
+.card-content h5 ,
+.streaming-div h6 {
+  color: var(--text-color);
+}
+
+.btn.btn-primary.btn-sm{
+	background-color: var(--search-color);
+	border: none ;
+	border-radius: 0 ;
 }

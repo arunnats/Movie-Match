@@ -11,14 +11,13 @@
     --search-color:rgb(131, 11, 11) ;
 }
 
-
 /*main*/ 
 
 .main{
     display: flex ;
     align-items: center ;
     justify-content: center ;
-    margin-top: 15vh ;
+    margin-top: 10vh ;
 }
 
 .formdiv{
@@ -46,12 +45,22 @@
     border: 2px solid rgba(149, 120, 120, 0.5);
     border-radius: 5px ;
     margin-bottom: 1vh ;
+    height: 5vh;
+    max-width: 30vw;
 }
 
 .btn.btn-secondary.btn-lg{
     margin-top: 5vh ;
 }
+
 /* nav bar css */
+
+.navbar-nav img {
+    width: 40px; 
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .navbar.navbar-expand-lg.bg-body-tertiary{
     padding: 0 ;
 }
