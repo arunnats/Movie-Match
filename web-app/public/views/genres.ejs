@@ -48,36 +48,44 @@
 
 		<div class="main">
 			<div class="content-container">
-				<h1><%= genreName %></h1>
-				<div class="movie-cards-container">
-					<% genreResults.forEach(movie => { %>
-					<div class="movie-cards">
-						<img
-							src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
-							alt="Image"
-						/>
-						<div class="card-content">
-							<h6><%= movie.title %></h6>
-							<h6><%= movie.year %></h6>
-							<h6><%= movie.language %></h6>
-							<h6><%= movie.genre %></h6>
-							<div class="streaming-div">
-								<% if (movie.streaming && movie.streaming !== 'None Found') { %>
-								<img
-									style="width: 20px; height: auto; margin-right: 5px"
-									src="<%= movie.streamingLogo %>"
-									alt="Logo"
-								/>
-								<h6><%= movie.streaming %></h6>
-								<% } %>
+				<h1><%= categoryName %></h1>
+				<% Object.keys(genreResults).forEach(genre => { %>
+				<div class="genre-section">
+					<h2><%= genre %></h2>
+					<div class="movie-cards-container">
+						<% let count = 0; %> <% // Shuffle the movies directly in the loop
+						const shuffledMovies = genreResults[genre].sort(() => Math.random()
+						- 0.5); %> <% shuffledMovies.slice(0, 8).forEach(movie => { %>
+						<div class="movie-cards">
+							<img
+								src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
+								alt="Image"
+							/>
+							<div class="card-content">
+								<h6><%= movie.title %></h6>
+								<h6><%= movie.year %></h6>
+								<h6><%= movie.language %></h6>
+								<h6><%= movie.genre %></h6>
+								<div class="streaming-div">
+									<% if (movie.streaming && movie.streaming !== 'None Found') {
+									%>
+									<img
+										style="width: 20px; height: auto; margin-right: 5px"
+										src="<%= movie.streamingLogo %>"
+										alt="Logo"
+									/>
+									<h6><%= movie.streaming %></h6>
+									<% } %>
+								</div>
+								<a href="/view-info/<%= movie.tconst %>"
+									><button>See More</button></a
+								>
 							</div>
-							<a href="/view-info/<%= movie.tconst %>"
-								><button>See More</button></a
-							>
 						</div>
+						<% count++; %> <% }); %>
 					</div>
-					<% }); %>
 				</div>
+				<% }); %>
 			</div>
 		</div>
 
