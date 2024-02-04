@@ -1,44 +1,96 @@
- 
-body{
-    margin: 0 ;
-    padding: 0;
-}
-
 button{
     width: 5vw;
-
-}
-.header{ 
-    display: flex ;
-    width: 100vw ;
-    height: 10vh;
-    background-color: var(--header-color) ;
-    justify-content: space-between ;
-    align-items: center ;
-    position: fixed ;
 }
 
 .main{ 
     display: flex ;
     flex-direction: column;
     width: 100vw ;
-    height: 100vh ;
-    background-color: var(--main-color) ;
     justify-content: center ;
     align-items: center ;
 }
 
-.filters{
-    display: flex ;
-    width: 20vw ;
-    margin-right: 5vw ;
-    justify-content: space-between;
+body {
+	margin: 0;
+	padding: 0;
 }
 
+.main{
+	margin-top: 15vh;
+}
 
-.additional_search{
-    display: flex ;
-    justify-content: space-between;
-    width: 15vw ;
-    margin-top: 10vh ;
+.movie-box {
+	width: 10vw;
+	height: 20vh;
+	background-color: grey;
+}
+
+:root{
+    --header-color : rgb(73, 134, 73) ;
+    --body-color: white ;
+    --search-color: rgb(14, 81, 5);
+}
+
+.dark_theme{
+    --header-color: rgb(67, 66, 66) ;
+    --body-color: rgb(39, 38, 38) ;
+    --search-color:rgb(131, 11, 11) ;
+}
+
+/*css for nav bar*/
+
+.btn.btn-outline-success {
+    color: black;
+}
+
+.navbar.navbar-expand-lg.bg-body-tertiary{
+    padding: 0 ;
+}
+
+#theme{
+    width: 5vw ;
+    height: 5vh ;
+    cursor: pointer;
+}
+
+.container-fluid{
+    background-color: var(--header-color) ;
+    height: 8vh ;
+}
+
+body {
+    background-color: var(--body-color);
+}
+
+.navbar-nav .nav-link {
+    color: white ;
+    font-size: 18px; 
+}
+
+.navbar-brand {
+    color: white; 
+    font-size: 18px; 
+}
+  
+.navbar-nav .nav-link.active {
+    color: white ; 
+    font-size: 18px; 
+}
+
+.d-flex .btn.btn-outline-success{
+    background-color: var(--search-color); 
+    color: white ; 
+    font-size: 18px;
+    border: none ;
+    border-radius: 0 ;
+}
+
+.d-flex .form-control.me-2{
+    border-radius: 0 ;
+}
+
+.streaming-logo {
+	width: 20px;
+	height: auto;
+	margin-right: 5px;
 }
