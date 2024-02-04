@@ -14,21 +14,29 @@ body {
 }
 
 :root{
-    --header-color : rgb(73, 134, 73) ;
-    --body-color: white ;
-    --search-color: rgb(14, 81, 5);
-}
-
-.dark_theme{
     --header-color: rgb(67, 66, 66) ;
     --body-color: rgb(39, 38, 38) ;
     --search-color:rgb(131, 11, 11) ;
+    --text-color :white ;
+}
+
+.dark_theme{
+    --header-color : rgb(73, 134, 73) ;
+    --body-color: white ;
+    --search-color: rgb(14, 81, 5);
+    --text-color:black ;
 }
 
 /*css for nav bar*/
 
 .btn.btn-outline-success {
     color: black;
+}
+
+.navbar-nav img {
+    width: 40px; 
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .navbar.navbar-expand-lg.bg-body-tertiary{
@@ -81,4 +89,13 @@ body {
 	width: 20px;
 	height: auto;
 	margin-right: 5px;
+}
+
+.navbar-nav li {
+    border-right: 2px solid #ccc; /
+    padding-right: 10px; 
+}
+
+.navbar-nav li:last-child {
+    border-right: none; 
 }

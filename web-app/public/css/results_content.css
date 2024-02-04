@@ -22,7 +22,7 @@
 	min-width: 200px; /* Adjust as needed */
 	flex-basis: calc(15vw - 2vw); /* Adjust as needed, considering padding */
 	border-radius: 5px;
-	border: 2px solid #402e32;
+	border: 2px solid var(--text-color);
 	margin: 1vh;
 	padding: 1vw;
 	display: grid;
@@ -62,4 +62,11 @@
 
 .card-content button {
 	margin-top: auto;
+}
+
+.content-container h1,
+.genre-section h2,
+.card-content h6,
+.streaming-div h6 {
+  color: var(--text-color);
 }
