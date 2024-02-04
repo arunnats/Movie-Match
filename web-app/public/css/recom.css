@@ -18,7 +18,7 @@
     display: flex ;
     align-items: center ;
     justify-content: center ;
-    margin-top: 20vh ;
+    margin-top: 15vh ;
 }
 
 .formdiv{
@@ -30,9 +30,27 @@
 #recommendationForm{
     display: flex ;
     flex-direction: column ;
-    width: 30vh;
+    width: 30vw;
+    max-width: 30vw;
+    padding: 5vh 3vw 5vh ;
+    border: 2px solid rgba(149, 120, 120, 0.5);
+    border-radius: 20px ;
 }
 
+
+.movieName1 , .movieName2 , .movieName3 , .movieName4 , .keywords1 , .keywords2{
+    margin-bottom: 10px ;
+}
+
+#movieName1 , #movieName2 , #movieName3 , #movieName4 , #keywords1 , #keywords2{
+    border: 2px solid rgba(149, 120, 120, 0.5);
+    border-radius: 5px ;
+    margin-bottom: 1vh ;
+}
+
+.btn.btn-secondary.btn-lg{
+    margin-top: 5vh ;
+}
 /* nav bar css */
 .navbar.navbar-expand-lg.bg-body-tertiary{
     padding: 0 ;

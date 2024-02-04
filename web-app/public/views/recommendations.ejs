@@ -37,6 +37,14 @@
 			<div class="container-fluid">
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<a href="/">
+							<img
+								src="/images/logo_navbar.png"
+								alt="IMDb Logo"
+								width="30"
+								height="30"
+							/>
+						</a>
 						<li class="nav-item">
 							<a class="nav-link" href="#">Recommendations</a>
 						</li>
@@ -79,7 +87,7 @@
 				</div>
 			</div>
 		</nav>
-		
+
 		<div class="main">
 			<div class="formDiv">
 				<form id="recommendationForm">
@@ -101,9 +109,8 @@
 					<label for="keywords2">Keywords 2:</label>
 					<input type="text" id="keywords2" name="keywords2" required />
 
-					<button type="button" onclick="submitRecommendationForm()">
-						Get Recommendations
-					</button>
+					<button type="button" class="btn btn-secondary btn-lg" onclick="submitRecommendationForm() ; disable()">Get Reccomendations</button>
+
 				</form>
 			</div>
 			<br />
@@ -127,10 +134,15 @@
 			document.getElementById("theme").addEventListener("click", () => {
 				document.body.classList.toggle("dark_theme");
 			});
-
+			
+			function disable( ){
+				document.querySelector( ".btn.btn-secondary.btn-lg").innerHTML = "Loading .." ;
+				document.querySelector( ".btn.btn-secondary.btn-lg").disabled = true ;
+			}
 			async function submitRecommendationForm() {
 				try {
 					const form = document.getElementById("recommendationForm");
+					
 					const formData = new FormData(form);
 
 					const jsonObject = {};
