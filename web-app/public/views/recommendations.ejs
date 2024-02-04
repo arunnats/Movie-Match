@@ -43,8 +43,7 @@
 			</div>
 		</div>
 
-		<!-- recommendation form -->
-
+		<!-- Recommendation form -->
 		<div class="main">
 			<div class="formDiv">
 				<form id="recommendationForm">
@@ -90,6 +89,7 @@
 					jsonObject[key] = value;
 				});
 				console.log(jsonObject);
+
 				// Send POST request to /getrecommendations
 				fetch("/getrecommendations", {
 					method: "POST",

@@ -470,19 +470,31 @@ async function performAdvancedSearch(options) {
 		)
 		.filter((movie) => !(movie.poster === "N/A" && movie.posteralt === ""))
 		.sort((a, b) => b.weightedRating - a.weightedRating) // Sort by descending weighted rating
-		.slice(0, 100); // Limit the responses to the first 100
+		.slice(0, 200); // Limit the responses to the first 100
 
 	return sortedMovies;
 }
 
 app.post("/getrecommendations", async (req, res) => {
 	try {
-		const { movie1, movie2, movie3, movie4, keyword1, keyword2 } = req.body;
+		const {
+			movieName1,
+			movieName2,
+			movieName3,
+			movieName4,
+			keywords1,
+			keywords2,
+		} = req.body;
 
-		console.log(movie1 + movie2 + movie3 + movie4 + keyword1 + keyword2);
+		console.log("movieName1:", movieName1);
+		console.log("movieName2:", movieName2);
+		console.log("movieName3:", movieName3);
+		console.log("movieName4:", movieName4);
+		console.log("keywords1:", keywords1);
+		console.log("keywords2:", keywords2);
 
-		const prompt = `Recommend movies similar to ${movie1}, ${movie2}, ${movie3}, ${movie4} with keywords ${keyword1} and ${keyword2}.`;
-
+		const prompt = `Recommend movies similar to ${movieName1}, ${movieName2}, ${movieName3}, ${movieName4} with keywords ${keywords1} and ${keywords2}.`;
+		console.log("Prompt: " + prompt);
 		console.log("Sending req to gpt");
 
 		const response = await openai.chat.completions.create({
@@ -491,7 +503,7 @@ app.post("/getrecommendations", async (req, res) => {
 				{
 					role: "system",
 					content:
-						"You are a movie recommendation generator. Tou will always output 10 movies based on the prompt and your format will be a json file in this format: {'movienames':['movie1','movie2','movie3','movie4','movie5','movie6','movie7','movie8','movie9','movie10',]}. You will replace the movie1 to movie 10 with your recommendations. Your ouput should always strcitly be as specified. You will generate movies recs based on the similar language, actors, cinematic universe, genre and themes along with other factors",
+						"You are a movie recommendation generator. You will always output 30 movies based on the prompt and your format will be a JSON file in this format: {'movienames':['movie1','movie2','movie3','movie4','movie5','movie6','movie7','movie8','movie9','movie10', and so on]}. You will replace the movie1 to movie 10 with your recommendations. Your output should always strictly be as specified. You will generate movies recs based on the similar language, actors, cinematic universe, genre and themes along with other factors, try to have movies from 1981 to the latest you have access to and make sure that atleast 10 are from between 1981 and 2009",
 				},
 				{
 					role: "user",
@@ -501,10 +513,9 @@ app.post("/getrecommendations", async (req, res) => {
 		});
 
 		console.log(response);
+		console.log(response.choices[0].message.content);
 
-		const movieNames = response.data.choices[0].message.content
-			.trim()
-			.split("\n");
+		const movieNames = response.choices[0].message.content.trim().split("\n");
 
 		console.log(movieNames);
 

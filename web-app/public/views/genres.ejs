@@ -55,7 +55,7 @@
 					<div class="movie-cards-container">
 						<% let count = 0; %> <% // Shuffle the movies directly in the loop
 						const shuffledMovies = genreResults[genre].sort(() => Math.random()
-						- 0.5); %> <% shuffledMovies.slice(0, 8).forEach(movie => { %>
+						- 0.5); %> <% shuffledMovies.slice(0, 10).forEach(movie => { %>
 						<div class="movie-cards">
 							<img
 								src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
