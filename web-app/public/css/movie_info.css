@@ -1,6 +1,6 @@
 .keyword-container {
 	margin-top: 20px; /* Adjust the margin as needed */
-	width: 80%;
+	width: 85%;
 	margin: auto;
 }
 
@@ -23,8 +23,8 @@
 
 .poster-details-container {
 	display: grid;
-	grid-template-columns: 60% 40%; /* 60-40 split */
-	width: 80%; /* Takes up 80% of the screen width */
+	grid-template-columns: 40% 60%; /* 60-40 split */
+	width: 85%; /* Takes up 80% of the screen width */
 	margin: 0 auto; /* Center the container */
 	gap: 20px; /* Adjust the gap as needed */
 }
@@ -56,4 +56,9 @@
 	border: 1px solid black;
 	border-radius: 8px; /* Adjust the radius as needed */
 	padding: 10px; /* Optional: Add padding to the container */
+}
+
+.review_container {
+	width: 85%;
+	margin: auto;
 }
