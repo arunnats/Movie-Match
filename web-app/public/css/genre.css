@@ -13,10 +13,10 @@
 }
 
 .light_theme{
-    --header-color : rgb(73, 134, 73) ;
-    --body-color: white ;
-    --search-color: rgb(14, 81, 5);
-    --text-color : black ;
+    --header-color: #3d8498;
+	--body-color: #effcff;
+	--search-color: rgb(32, 93, 110);
+    --text-color:black ;
 }
 
 /* nav bar */
@@ -76,7 +76,9 @@ body {
     border-right: none; 
 }
 
-
+.navbar-color-field{
+    background-color: var(--header-color) ;
+}
 /* /////////content container////////// */
 
 .content-container {
@@ -147,7 +149,14 @@ body {
 
 .content-container h1,
 .genre-section h2,
-.card-content h6,
+.card-content h6 ,
+.card-content h5 ,
 .streaming-div h6 {
   color: var(--text-color);
+}
+
+.btn.btn-primary.btn-sm{
+	background-color: var(--search-color);
+	border: none ;
+	border-radius: 0 ;
 }
