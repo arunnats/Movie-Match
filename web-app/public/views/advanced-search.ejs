@@ -418,8 +418,9 @@
 						});
 
 						const { searchId } = await response.json();
-
-						window.location.href = `/adv-results?searchId=${searchId}`;
+						console.log("hi");
+						console.log(searchId);
+						window.location.href = `/results?searchId=${searchId}`;
 					} catch (error) {
 						console.error("Error:", error);
 					}

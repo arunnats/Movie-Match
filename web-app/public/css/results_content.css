@@ -9,6 +9,7 @@
 
 .movie-cards-container {
 	width: 100%;
+	/* max-width: 1200px; Adjust as needed */
 	margin: auto;
 	display: flex;
 	flex-wrap: wrap;
@@ -17,12 +18,13 @@
 }
 
 .movie-cards {
-	height: 55vh; /* 30% of the viewport height */
-	width: 15vw; /* 25% of the viewport width */
+	height: 55vh;
+	min-width: 200px; /* Adjust as needed */
+	flex-basis: calc(15vw - 2vw); /* Adjust as needed, considering padding */
 	border-radius: 5px;
 	border: 2px solid #402e32;
-	margin: 1vh; /* 1% of the viewport height */
-	padding: 1vw; /* 1% of the viewport width */
+	margin: 1vh;
+	padding: 1vw;
 	display: grid;
 	grid-template-rows: 60% 40%;
 }

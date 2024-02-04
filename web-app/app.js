@@ -129,116 +129,20 @@ app.post("/search", async (req, res) => {
 
 app.post("/adv-search", async (req, res) => {
 	try {
-		// Ensure ott,is not empty, if empty, set them to ["Netflix", "Amazon Prime Video", "Hotstar", "Lionsgate Play"]
-
+		const { options } = req.body;
 		console.log("Received options:", options);
 
-		let filteredMovies = cachedMovies;
+		const sortedMovies = await performAdvancedSearch(options);
 
-		// Apply genre filter if options are selected
-		if (genre.length > 0) {
-			filteredMovies = filteredMovies.filter((movie) => {
-				const movieGenres = movie.Genre.split(", ").map((g) => g.trim());
-				return (
-					genre.includes("All") || genre.some((g) => movieGenres.includes(g))
-				);
-			});
-		}
-
-		// Apply language filter if options are selected
-		if (language.length > 0) {
-			filteredMovies = filteredMovies.filter((movie) => {
-				return language.includes("All") || language.includes(movie.Language);
-			});
-		}
-
-		// Apply OTT filter if options are selected
-		if (ott.length > 0) {
-			filteredMovies = filteredMovies.filter((movie) => {
-				return (
-					ott.includes("All") ||
-					(movie.StreamingService &&
-						ott.some((o) =>
-							movie.StreamingService.some(
-								(service) => service.StreamingService === o
-							)
-						))
-				);
-			});
-		}
-
-		// Apply rating filter if options are selected
-		if (rating.length > 0) {
-			filteredMovies = filteredMovies.filter((movie) => {
-				return (
-					rating.includes("All") ||
-					rating.includes(movie.Rated) ||
-					(rating.includes("18+") &&
-						(movie.Rated === "18" || movie.Rated === "R"))
-				);
-			});
-		}
-
-		// Rest of your code remains unchanged
-
-		const sortedMovies = filteredMovies
-			.map(
-				({
-					tconst,
-					Title,
-					Poster,
-					PosterAlt,
-					Language,
-					Genre,
-					IMDBRating,
-					RottenTomatoesRating,
-					StreamingService,
-					Year,
-				}) => {
-					// Check if StreamingService is an array and has length
-					const streamingService =
-						Array.isArray(StreamingService) && StreamingService.length > 0
-							? StreamingService[0]?.StreamingService
-							: "All";
-
-					// Convert ratings to numeric values, replacing '%' in Rotten Tomatoes Rating
-					const rtRating = RottenTomatoesRating
-						? parseFloat(RottenTomatoesRating.replace("%", ""))
-						: 0;
-					const imdbRating = IMDBRating ? parseFloat(IMDBRating) : 0;
-
-					// Calculate weighted average rating
-					const weightedRating = (2 * rtRating + 1.5 * imdbRating) / 3.5;
-
-					return {
-						tconst,
-						title: Title,
-						poster: Poster,
-						posteralt: PosterAlt,
-						language: Language,
-						genre: Genre,
-						imdb: IMDBRating,
-						rt: RottenTomatoesRating,
-						streaming: streamingService,
-						streamingLogo: StreamingService[0]?.LogoPath,
-						year: Year,
-						weightedRating,
-					};
-				}
-			)
-			.filter((movie) => !(movie.poster === "N/A" && movie.posteralt === ""))
-			.sort((a, b) => b.weightedRating - a.weightedRating) // Sort by descending weighted rating
-			.slice(0, 100); // Limit the responses to the first 100
-
-		//console.log("Search Results:", sortedMovies);
 		console.log("Search Results SUCCESS");
 
 		const searchId =
 			sortedMovies.length > 0 ? crypto.randomBytes(8).toString("hex") : "0";
+
 		console.log("Generated searchId:", searchId);
 		req.session[searchId] = sortedMovies;
 		console.log("Stored in session:", req.session[searchId]);
-
+		console.log("searchId");
 		res.json({ searchId });
 	} catch (error) {
 		console.error(error);
@@ -378,25 +282,122 @@ app.get("/streaming-service", async (req, res) => {
 	}
 });
 
+// async function performAdvancedSearch(options) {
+// 	const filteredMovies = cachedMovies.filter((movie) => {
+// 		// Apply genre filter if options are selected
+// 		const movieGenres = movie.Genre.split(", ").map((g) => g.trim());
+// 		if (options.genre.length > 0 && !options.genre.includes("All")) {
+// 			if (!options.genre.some((g) => movieGenres.includes(g))) {
+// 				return false;
+// 			}
+// 		}
+
+// 		// Apply language filter if options are selected
+// 		if (options.language.length > 0 && !options.language.includes("All")) {
+// 			if (!options.language.includes(movie.Language)) {
+// 				return false;
+// 			}
+// 		}
+
+// 		// Apply OTT filter if options are selected
+// 		if (options.ott.length > 0 && !options.ott.includes("All")) {
+// 			if (
+// 				!movie.StreamingService ||
+// 				!movie.StreamingService.some((service) =>
+// 					options.ott.includes(service.StreamingService)
+// 				)
+// 			) {
+// 				return false;
+// 			}
+// 		}
+
+// 		// Apply rating filter if options are selected
+// 		if (options.rating.length > 0 && !options.rating.includes("All")) {
+// 			if (
+// 				!options.rating.includes(movie.Rated) &&
+// 				!(
+// 					options.rating.includes("18+") &&
+// 					(movie.Rated === "18" || movie.Rated === "R")
+// 				)
+// 			) {
+// 				return false;
+// 			}
+// 		}
+
+// 		return true;
+// 	});
+
+// 	const sortedMovies = filteredMovies
+// 		.map(
+// 			({
+// 				tconst,
+// 				Title,
+// 				Poster,
+// 				PosterAlt,
+// 				Language,
+// 				Genre,
+// 				IMDBRating,
+// 				RottenTomatoesRating,
+// 				StreamingService,
+// 				Year,
+// 			}) => {
+// 				// Check if StreamingService is an array and has length
+// 				const streamingService =
+// 					Array.isArray(StreamingService) && StreamingService.length > 0
+// 						? StreamingService[0]?.StreamingService
+// 						: "All";
+
+// 				// Convert ratings to numeric values, replacing '%' in Rotten Tomatoes Rating
+// 				const rtRating = RottenTomatoesRating
+// 					? parseFloat(RottenTomatoesRating.replace("%", ""))
+// 					: 0;
+// 				const imdbRating = IMDBRating ? parseFloat(IMDBRating) : 0;
+
+// 				// Calculate weighted average rating
+// 				const weightedRating = (2 * rtRating + 1.5 * imdbRating) / 3.5;
+
+// 				return {
+// 					tconst,
+// 					title: Title,
+// 					poster: Poster,
+// 					posteralt: PosterAlt,
+// 					language: Language,
+// 					genre: Genre,
+// 					imdb: IMDBRating,
+// 					rt: RottenTomatoesRating,
+// 					streaming: streamingService,
+// 					streamingLogo: StreamingService[0]?.LogoPath,
+// 					year: Year,
+// 					weightedRating,
+// 				};
+// 			}
+// 		)
+// 		.filter((movie) => !(movie.poster === "N/A" && movie.posteralt === ""))
+// 		.sort((a, b) => b.weightedRating - a.weightedRating) // Sort by descending weighted rating
+// 		.slice(0, 200); // Limit the responses to the first 100
+
+// 	return sortedMovies;
+// }
+
 async function performAdvancedSearch(options) {
 	const filteredMovies = cachedMovies.filter((movie) => {
 		// Apply genre filter if options are selected
 		const movieGenres = movie.Genre.split(", ").map((g) => g.trim());
-		if (options.genre.length > 0 && !options.genre.includes("All")) {
+		if (options.genre.length > 0) {
 			if (!options.genre.some((g) => movieGenres.includes(g))) {
 				return false;
 			}
 		}
 
 		// Apply language filter if options are selected
-		if (options.language.length > 0 && !options.language.includes("All")) {
+		if (options.language.length > 0) {
 			if (!options.language.includes(movie.Language)) {
 				return false;
 			}
 		}
 
 		// Apply OTT filter if options are selected
-		if (options.ott.length > 0 && !options.ott.includes("All")) {
+		if (options.ott.length > 0) {
 			if (
 				!movie.StreamingService ||
 				!movie.StreamingService.some((service) =>
@@ -405,10 +406,20 @@ async function performAdvancedSearch(options) {
 			) {
 				return false;
 			}
+		} else {
+			// If OTT is empty, set it to a default array
+			options.ott = [
+				"Netflix",
+				"Hotstar",
+				"Amazon Prime Video",
+				"Sony Liv",
+				"Eros Now",
+				"Sun Nxt",
+			];
 		}
 
 		// Apply rating filter if options are selected
-		if (options.rating.length > 0 && !options.rating.includes("All")) {
+		if (options.rating.length > 0) {
 			if (
 				!options.rating.includes(movie.Rated) &&
 				!(
@@ -441,7 +452,7 @@ async function performAdvancedSearch(options) {
 				const streamingService =
 					Array.isArray(StreamingService) && StreamingService.length > 0
 						? StreamingService[0]?.StreamingService
-						: "All";
+						: "";
 
 				// Convert ratings to numeric values, replacing '%' in Rotten Tomatoes Rating
 				const rtRating = RottenTomatoesRating

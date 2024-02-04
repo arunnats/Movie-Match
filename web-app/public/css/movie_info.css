@@ -1,0 +1,22 @@
+.keyword-container {
+	margin-top: 20px; /* Adjust the margin as needed */
+	width: 80%;
+	margin: auto;
+}
+
+.keywords {
+	padding: 10px;
+	text-align: center;
+}
+
+.keyword-list {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.keyword-list li {
+	margin: 0 10px; /* Adjust the spacing between keywords */
+}
