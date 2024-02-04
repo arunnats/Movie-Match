@@ -93,7 +93,7 @@
 			<div class="content-container">
 				<h1>Results</h1>
 				<div class="movie-cards-container">
-					<% searchResults.forEach(movie => { %>
+					<% searchResults.forEach(movie => { %> <% if (movie) { %>
 					<div class="movie-cards">
 						<img
 							src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
@@ -119,7 +119,7 @@
 							>
 						</div>
 					</div>
-					<% }); %>
+					<% } %> <% }); %>
 				</div>
 			</div>
 		</div>

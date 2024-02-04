@@ -485,7 +485,23 @@ const searchMovies = async (query) => {
 		const searchResults = fuse.search(query).slice(0, 1); // Get the top result
 
 		if (searchResults.length > 0) {
-			resolve(searchResults[0].item);
+			const item = searchResults[0].item;
+
+			const formattedResult = {
+				tconst: item.tconst,
+				title: item.Title,
+				poster: item.Poster,
+				year: item.Year,
+				posteralt: item.PosterAlt,
+				language: item.Language,
+				genre: item.Genre,
+				imdb: item.IMDBRating,
+				rt: item.RottenTomatoesRating,
+				streaming: item.StreamingService[0]?.StreamingService,
+				streamingLogo: item.StreamingService[0]?.LogoPath,
+			};
+
+			resolve(formattedResult);
 		} else {
 			resolve(null); // Resolve with null if no match is found
 		}
@@ -547,7 +563,7 @@ app.post("/getrecommendations", async (req, res) => {
 
 		req.session[searchId] = movieDetails;
 
-		res.json({ searchId });
+		res.json({ movieDetails, searchId });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });
@@ -568,6 +584,18 @@ app.get("/view-info/:tconst", (req, res) => {
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: "Internal Server Error" });
+	}
+});
+
+app.get("/test-search", async (req, res) => {
+	try {
+		const query = "misery";
+		const result = await searchMovies(query);
+		console.log("Search Result:", result);
+		res.send("Check console for results.");
+	} catch (error) {
+		console.error("Error:", error);
+		res.status(500).send("Internal Server Error");
 	}
 });
 

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -25,7 +24,6 @@
 	</head>
 	<body>
 		<div class="header">
-			<!-- theme change button-->
 			<div class=".theme_hold">
 				<svg id="theme" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 					<title>weather-night</title>
@@ -34,16 +32,12 @@
 					/>
 				</svg>
 			</div>
-
-			<!-- search bar -->
 			<div class="search">
 				<div class="icon"><i class="fa fa-search"></i></div>
 				<input type="text" placeholder="Search.." class="bar" />
 				<button class="searchButton">Search</button>
 			</div>
 		</div>
-
-		<!-- Recommendation form -->
 		<div class="main">
 			<div class="formDiv">
 				<form id="recommendationForm">
@@ -70,8 +64,23 @@
 					</button>
 				</form>
 			</div>
+			<br />
+			<div
+				class="content-container"
+				id="resultsContainer"
+				style="display: none"
+			>
+				<h1>Results</h1>
+				<div class="movie-cards-container" id="movieCardsContainer">
+					<!-- Five initial hidden movie cards -->
+					<div class="movie-cards" style="display: none"></div>
+					<div class="movie-cards" style="display: none"></div>
+					<div class="movie-cards" style="display: none"></div>
+					<div class="movie-cards" style="display: none"></div>
+					<div class="movie-cards" style="display: none"></div>
+				</div>
+			</div>
 		</div>
-
 		<script>
 			document.body.classList.add("dark_theme");
 
@@ -97,9 +106,12 @@
 						body: JSON.stringify(jsonObject),
 					});
 
-					const { searchId } = await response.json();
+					const { movieDetails, searchId } = await response.json();
 
-					window.location.replace(`/results?searchId=${searchId}`);
+					console.log("Movie Details:", movieDetails);
+					console.log("Search ID:", searchId);
+
+					window.location.href = `/results?searchId=${searchId}`;
 				} catch (error) {
 					console.error("Error:", error);
 				}
