@@ -1,19 +1,19 @@
-.main{ 
-    min-height: 100vh;
-    flex-direction: column ;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.main {
+	min-height: 100vh;
+	flex-direction: column;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-#theme{
-    width: 50px; 
-    height: 50px ;
-    padding-right: 20p ;
+#theme {
+	width: 50px;
+	height: 50px;
+	padding-right: 20p;
 }
 
-#theme:hover{
-    cursor: pointer ;
+#theme:hover {
+	cursor: pointer;
 }
 
 body {
@@ -27,96 +27,120 @@ body {
 	background-color: grey;
 }
 
-:root{
-    --header-color :#3D8498 ;
-    --body-color: #EFFCFF ;
-    --search-color: rgb(61, 132, 152);
+:root {
+	--header-color: #3d8498;
+	--body-color: #effcff;
+	--search-color: rgb(61, 132, 152);
 }
 
-.dark_theme{
-    --header-color: rgb(67, 66, 66) ;
-    --body-color: rgb(39, 38, 38) ;
-    --search-color:rgb(160, 11, 11) ;
+.dark_theme {
+	--header-color: rgb(67, 66, 66);
+	--body-color: rgb(39, 38, 38);
+	--search-color: rgb(160, 11, 11);
 }
 
-.buttonDiv{
-    display: flex ;
-    align-items: center ;
-    justify-content: space-between ;
-    margin-top: 8vh ;
+.buttonDiv {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 8vh;
 }
 
-.btn.btn-secondary.btn-lg{
-    background-color: var(--search-color);
-    border: none ;
-    border-radius: 0 ;
+.btn.btn-secondary.btn-lg {
+	background-color: var(--search-color);
+	border: none;
+	border-radius: 0;
 }
 /*css for nav bar*/
 
 .btn.btn-outline-success {
-    color: black;
+	color: black;
 }
 
-.navbar.navbar-expand-lg.bg-body-tertiary{
-    padding: 0 ;
+#theme {
+	width: 5vw;
+	height: 5vh;
+	cursor: pointer;
 }
 
-#theme{
-    width: 5vw ;
-    height: 5vh ;
-    cursor: pointer;
-}
-
-.container-fluid{
-    background-color: var(--header-color) ;
-    height: 8vh ;
+.container-fluid {
+	background-color: var(--header-color);
+	height: 8vh;
 }
 
 body {
-    background-color: var(--body-color);
-    border: none ;
+	background-color: var(--body-color);
+	border: none;
+}
+
+.navbar {
+	/* height: 70px; Set a fixed height for the navbar */
+}
+
+.navbar.navbar-expand-lg {
+	padding: 0;
+}
+
+.navbar-toggler {
+	border: none;
+}
+
+.navbar-toggler-icon {
+	background-color: white; /* Set the background color for the toggler icon */
+}
+
+.navbar-toggler:focus {
+	outline: none;
 }
 
 .navbar-nav .nav-link {
-    color: white ;
-    font-size: 18px;
-    margin-left: 2px ;
-    margin-right: 2px ;
+	color: white;
+	font-size: 18px;
+	margin-left: 2px;
+	margin-right: 2px;
 }
 
 .navbar-brand {
-    color: white; 
-    font-size: 18px; 
+	color: white;
+	font-size: 18px;
+	height: 100%; /* Make the navbar-brand container take full height */
+	display: flex;
+	align-items: center; /* Center the content vertically */
 }
-  
+
 .navbar-nav .nav-link.active {
-    color: white ; 
-    font-size: 18px; 
+	color: white;
+	font-size: 18px;
 }
 
-.d-flex .btn.btn-outline-success{
-    background-color: var(--search-color); 
-    color: white ; 
-    font-size: 18px;
-    border: none ;
-    border-radius: 0 ;
+.d-flex .btn.btn-outline-success {
+	background-color: var(--search-color);
+	color: white;
+	font-size: 18px;
+	border: none;
+	border-radius: 0;
 }
 
-.d-flex .form-control.me-2{
-    border-radius: 0 ;
+.d-flex .form-control.me-2 {
+	border-radius: 0;
 }
 
 .navbar-nav li {
-    border-right: 2px solid #ccc; /* Add a right border to each list item */
-    padding-right: 10px; /* Add some padding for better visual separation */
+	border-right: 2px solid #ccc;
+	padding-right: 10px;
 }
 
 .navbar-nav li:last-child {
-    border-right: none; 
+	border-right: none;
 }
 
 .streaming-logo {
 	width: 20px;
 	height: auto;
 	margin-right: 5px;
+}
+
+/* Add this rule for z-index on the dropdown menu */
+.navbar-nav {
+	z-index: 1000; /* or any value higher than other elements */
 }
