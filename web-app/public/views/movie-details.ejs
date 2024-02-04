@@ -92,32 +92,8 @@
 
 		<div class="main">
 			<div class="movie-details">
-				<img
-					src="<%= movieDetails.Poster %>"
-					alt="<%= movieDetails.PosterAlt %>"
-				/>
-				<h2><%= movieDetails.Title %></h2>
-				<p><%= movieDetails.Plot %></p>
-				<p>Directed by: <%= movieDetails.Director %></p>
-				<p>Written by: <%= movieDetails.Writer %></p>
-				<p>Starring: <%= movieDetails.Actors %></p>
-				<p>IMDb Rating: <%= movieDetails.IMDBRating %></p>
-				<p>Rotten Tomatoes Rating: <%= movieDetails.RottenTomatoesRating %></p>
-
-				<div class="streaming-service">
-					<img
-						src="<%= movieDetails.StreamingService[0].LogoPath %>"
-						alt="<%= movieDetails.StreamingService[0].StreamingService %> logo"
-					/>
-					<p>
-						Available on: <%= movieDetails.StreamingService[0].StreamingService
-						%>
-					</p>
-				</div>
-
-				<div class="poster-details-container rounded-border my-4">
+				<div class="poster-details-container rounded-border mt-4">
 					<div class="poster-ratings">
-						<!-- Poster image goes here -->
 						<img
 							src="<%= movieDetails.Poster %>"
 							alt="<%= movieDetails.PosterAlt %>"
@@ -127,7 +103,7 @@
 							class="rating-buttons d-flex flex-column justify-content-center my-2 mx-3"
 						>
 							<a href="https://www.imdb.com/title/<%= movieDetails.tconst %>/"
-								><button type="button" class="btn btn-warning mt-2">
+								><button type="button" class="btn btn-warning mt-1">
 									<img
 										src="/images/imdb-icon.png"
 										alt="IMDb Logo"
@@ -138,7 +114,7 @@
 								</button></a
 							>
 
-							<button type="button" class="btn btn-danger mt-2">
+							<button type="button" class="btn btn-danger mt-1">
 								<img
 									src="/images/rt-icon.png"
 									alt="Rotten Tomatoes Logo"
@@ -150,20 +126,50 @@
 						</div>
 					</div>
 
-					<div class="movie-information"></div>
+					<div class="movie-information mt-3 px-2">
+						<h2><%= movieDetails.Title %></h2>
+						<p><%= movieDetails.Plot %></p>
+						<p>Directed by: <%= movieDetails.Director %></p>
+						<p>Written by: <%= movieDetails.Writer %></p>
+						<p>Starring: <%= movieDetails.Actors %></p>
+						<p>Released: <%= movieDetails.Released %></p>
+						<p>Runtime: <%= movieDetails.Runtime %></p>
+						<p>Genre: <%= movieDetails.Genre %></p>
+						<p>Language: <%= movieDetails.Language %></p>
+						<p>Rated: <%= movieDetails.Rated %></p>
+						<p>Country: <%= movieDetails.Country %></p>
+
+						<% if (movieDetails.StreamingService &&
+						movieDetails.StreamingService.length > 0) { %>
+						<button type="button" class="btn btn-info mt-1">
+							<img
+								src="<%= movieDetails.StreamingService[0].LogoPath %>"
+								alt="<%= movieDetails.StreamingService[0].StreamingService %> Logo"
+								width="30"
+								height="30"
+							/>
+							Streaming on: <%=
+							movieDetails.StreamingService[0].StreamingService %>
+						</button>
+						<% } else { %>
+						<p>No streaming service</p>
+						<% } %>
+					</div>
 				</div>
 
-				<div class="review container">
+				<div class="review_container rounded-border mt-2">
+					<h3>Reviews:</h3>
+
+					<% let reviews = movieDetails.Reviews; if(reviews.length > 0) { %>
 					<div
 						id="reviewCarousel"
 						class="carousel slide"
 						data-bs-ride="carousel"
 					>
 						<div class="carousel-inner">
-							<% let reviews = movieDetails.Reviews; if(reviews.length > 0) {
-							reviews.forEach((review, index) => { let content = review.content;
-							if(content.length > 800) { content = content.substring(0, 800) +
-							'...'; } %>
+							<% reviews.forEach((review, index) => { let content =
+							review.content; if(content.length > 800) { content =
+							content.substring(0, 800) + '...'; } %>
 
 							<div class="carousel-item <%= index === 0 ? 'active' : '' %>">
 								<div class="card">
@@ -178,13 +184,10 @@
 									</div>
 								</div>
 							</div>
-
-							<% }); } else { %>
-							<p>No reviews available.</p>
-							<% } %>
+							<% }); %>
 						</div>
 
-						<!-- Buttons below the carousel -->
+						<% if(reviews.length > 1) { %>
 						<div class="carousel-buttons d-flex justify-content-center py-3">
 							<button
 								class="btn btn-secondary"
@@ -208,10 +211,14 @@
 								>
 							</button>
 						</div>
+						<% } %>
 					</div>
+					<% } else { %>
+					<p>No reviews available.</p>
+					<% } %>
 				</div>
 
-				<div class="keyword-container">
+				<div class="keyword-container mt-2">
 					<div class="keywords rounded-border">
 						<h3>Keywords:</h3>
 						<ul class="keyword-list">

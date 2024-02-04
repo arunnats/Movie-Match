@@ -96,7 +96,7 @@
 							alt="Image"
 						/>
 						<div class="card-content">
-							<h6><%= movie.title %></h6>
+							<h5><%= movie.title %></h5>
 							<h6><%= movie.year %></h6>
 							<h6><%= movie.language %></h6>
 							<h6><%= movie.genre %></h6>
@@ -107,11 +107,14 @@
 									src="<%= movie.streamingLogo %>"
 									alt="Logo"
 								/>
-								<h6><%= movie.streaming %></h6>
+								<h4><%= movie.streaming %></h6>
 								<% } %>
 							</div>
-							<a href="/view-info/<%= movie.tconst %>"
-								><button>See More</button></a
+							<a
+								href="/view-info/<%= movie.tconst %>"
+								class="btn btn-primary btn-sm"
+								role="button"
+								>See More</a
 							>
 						</div>
 					</div>
