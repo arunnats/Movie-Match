@@ -11,28 +11,34 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 		/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="cssfiles/test.css" />
+    	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 		<link rel="stylesheet" href="/css/searchbar.css" />
 		<link rel="stylesheet" href="/css/test.css" />
-		<link rel="stylesheet" href="/css/theme.css" />
 	</head>
 
 	<body>
 		<nav class="navbar navbar-expand-lg bg-body-tertiary">
 			<div class="container-fluid">
+				<!--
 			  <a class="navbar-brand" href="#">Navbar</a>
 			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			  </button>
+			-->
 			  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				  <li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="#">Recommendations</a>
+					<a class="nav-link active" aria-current="page" href="/recommendations">Recommendations</a>
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link" href="#">Genre</a>
+					<a class="nav-link active" aria-current="page" href="/advanced-search">Advanced-search</a>
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link" href="#">OTT</a>
+					<a class="nav-link" href="/genres">Genre </a>
+				  </li>
+				  <li class="nav-item">
+					<a class="nav-link" href="/streaming-service">  Streaming Service</a>
 				  </li>
 				</ul>
 				<svg id="theme" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -45,63 +51,53 @@
 			</div>
 		  </nav>
 
-		<div class="main">
-			<form
-				class="search"
-				action="#"
-				id="searchForm"
-				style="position: relative"
-			>
-				<div class="iconSearch"><i class="fa fa-search"></i></div>
-				<input
-					type="text"
-					placeholder="Search.."
-					class="bar"
-					id="searchInput"
-				/>
-				<div id="searchResults"></div>
-				<button id="viewItemButton">View Item</button>
-			</form>
-		</div>
+		
+			<div class="main">
+				<div class="input-box" id="searchForm">
+					<i class="uil uil-search"></i>
+					<input type="text" placeholder="Search here..." id="searchInput" />
+					<button class= "button" id="searchButton">Search</button>
+				</div>
+				<div class="buttonDiv">
+					<a href="/recommendations"><button type="button" class="btn btn-secondary btn-lg" style = "margin-right: 50px ;">Recommendations</button></a>
+					<a href="/advanced-search"><button type="button" class="btn btn-secondary btn-lg">Advanced search</button></a>
+				</div>
+			</div>
 
 		<script>
 			document.getElementById("theme").addEventListener("click", () => {
 				document.body.classList.toggle("dark_theme");
 			});
 
-			document
-				.getElementById("searchForm")
-				.addEventListener("submit", async function (event) {
-					event.preventDefault();
-
-					const searchQuery = document.getElementById("searchInput").value;
-
-					if (!searchQuery.trim()) {
-						return;
+			document.getElementById('searchButton').addEventListener('click', async function () {
+				const searchQuery = document.getElementById('searchInput').value;
+		
+				if (!searchQuery.trim()) {
+					return;
+				}
+		
+				try {
+					const response = await fetch('/search', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ query: searchQuery }),
+					});
+		
+					const { searchId } = await response.json();
+		
+					if (searchId === '0') {
+						alert('No results found. Please try a different combination.');
+					} else {
+						window.location.href = `/results?searchId=${searchId}`;
 					}
-
-					try {
-						const response = await fetch("/search", {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify({ query: searchQuery }),
-						});
-
-						const { searchId } = await response.json();
-
-						if (searchId === "0") {
-							alert("No results found. Please try a different combination.");
-						} else {
-							window.location.href = `/results?searchId=${searchId}`;
-						}
-					} catch (error) {
-						console.error("Error:", error);
-						// Handle error, show alert or redirect to an error page
-						alert("An error occurred. Please try again later.");
-					}
-				});
+				} catch (error) {
+					console.error('Error:', error);
+					// Handle error, show alert or redirect to an error page
+					alert('An error occurred. Please try again later.');
+				}
+			})
 		</script>
 	</body>
 </html>

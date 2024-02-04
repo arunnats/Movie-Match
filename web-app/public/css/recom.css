@@ -1,0 +1,90 @@
+/*theme*/
+:root{
+    --header-color : rgb(73, 134, 73) ;
+    --body-color: white ;
+    --search-color: rgb(14, 81, 5);
+}
+
+.dark_theme{
+    --header-color: rgb(67, 66, 66) ;
+    --body-color: rgb(39, 38, 38) ;
+    --search-color:rgb(131, 11, 11) ;
+}
+
+
+/*main*/ 
+
+.main{
+    display: flex ;
+    align-items: center ;
+    justify-content: center ;
+    margin-top: 20vh ;
+}
+
+.formdiv{
+    display: flex ;
+    align-items: center ;
+    justify-content: center ;
+}
+
+#recommendationForm{
+    display: flex ;
+    flex-direction: column ;
+    width: 30vh;
+}
+
+/* nav bar css */
+.navbar.navbar-expand-lg.bg-body-tertiary{
+    padding: 0 ;
+}
+
+#theme{
+    width: 5vw ;
+    height: 5vh ;
+    cursor: pointer;
+}
+
+.container-fluid{
+    background-color: var(--header-color) ;
+    height: 8vh ;
+}
+
+body {
+    background-color: var(--body-color);
+}
+
+.navbar-nav .nav-link {
+    color: white ;
+    font-size: 18px; 
+}
+
+.navbar-brand {
+    color: white; 
+    font-size: 18px; 
+}
+  
+.navbar-nav .nav-link.active {
+    color: white ; 
+    font-size: 18px; 
+}
+
+.d-flex .btn.btn-outline-success{
+    background-color: var(--search-color); 
+    color: white ; 
+    font-size: 18px;
+    border: none ;
+    border-radius: 0 ;
+}
+
+.d-flex .form-control.me-2{
+    border-radius: 0 ;
+}
+
+.navbar-nav li {
+    border-right: 2px solid #ccc;
+    padding-right: 10px; 
+}
+
+.navbar-nav li:last-child {
+    border-right: none; 
+}
