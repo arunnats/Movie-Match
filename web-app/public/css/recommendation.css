@@ -11,24 +11,23 @@
 	--text-color: white;
 }
 
-
-:root{
-    --header-color: #3d8498;
+:root {
+	--header-color: #3d8498;
 	--body-color: #effcff;
 	--search-color: rgb(32, 93, 110);
 }
 
-.dark_theme{
-    --header-color: rgb(67, 66, 66) ;
-    --body-color: rgb(39, 38, 38) ;
-    --search-color:rgb(131, 11, 11) ;
+.dark_theme {
+	--header-color: rgb(67, 66, 66);
+	--body-color: rgb(39, 38, 38);
+	--search-color: rgb(131, 11, 11);
+}
 
 .light_theme {
 	--header-color: #3d8498;
 	--body-color: #effcff;
 	--search-color: rgb(32, 93, 110);
 	--text-color: black;
-
 }
 
 /*css for nav bar*/
