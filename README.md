@@ -1,4 +1,4 @@
-![logo_navbar](https://github.com/arunnats/movie-match/assets/118368673/b597e0c8-3325-4c12-9282-6fb5aac85135)
+<img width="959" alt="Screenshot 2024-02-05 163246" src="https://github.com/arunnats/movie-match/assets/118368673/d80eb1d6-d447-48b8-aed5-e7a820461812">![logo_navbar](https://github.com/arunnats/movie-match/assets/118368673/b597e0c8-3325-4c12-9282-6fb5aac85135)
 
 # Movie-Match: Revolutionizing Your Movie-Watching Experience
 
@@ -29,6 +29,11 @@ Navigating the extensive cinematic landscape is simplified with Movie-Match's in
 ### Regular Database Updates
 Our commitment to providing up-to-date movie data remains steadfast. Daily updates, facilitated by a Python script, ensure that Movie-Match's database reflects the dynamic changes in the film industry.
 <img width="758" alt="Screenshot 2024-02-05 163435" src="https://github.com/arunnats/movie-match/assets/118368673/4505bfd3-9089-4bf8-866c-4ed4690cf267">
+
+### Sorting based on Genre and Streaming servive 
+Our code randomizes the top 200 movies in each Genre and Streaming Service so you can get a new pick every single day! 
+<img width="951" alt="Screenshot 2024-02-05 163235" src="https://github.com/arunnats/movie-match/assets/118368673/87e345c4-11f1-44be-889b-4187657fb33e">
+<img width="959" alt="Screenshot 2024-02-05 163246" src="https://github.com/arunnats/movie-match/assets/118368673/463da9a1-d7c0-4c71-8a92-91f850db0487">
 
 ### Movie Info pages
 Each movie has its own info page with all the details, a review carousel, buttons redirecting them to their IMDB page, information about the streaming service and the intricate details of hte movie found from IMDB, TMDB and OMDB.
