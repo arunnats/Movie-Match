@@ -54,14 +54,14 @@
 							height="30"
 						/>
 					</a>
-	
+
 					<ul
 						class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
 					>
-					<li>
-						<a href="/recommendations" class="nav-link px-2 text-white"
-							>Recommendations</a
-						>
+						<li>
+							<a href="/recommendations" class="nav-link px-2 text-white"
+								>Recommendations</a
+							>
 						</li>
 						<li>
 							<a href="/advanced-search" class="nav-link px-2 text-white"
@@ -77,12 +77,11 @@
 							>
 						</li>
 					</ul>
-	
+
 					<form
 						class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
 						role="search"
 					>
-          
 						<input
 							id="searchInput"
 							type="search"
@@ -90,24 +89,31 @@
 							placeholder="Search..."
 							aria-label="Search"
 						/>
-						<button id = "searchButton" type="submit" class="btn btn-outline-light">Search</button>
+						<button
+							id="searchButton"
+							type="submit"
+							class="btn btn-outline-light"
+						>
+							Search
+						</button>
 					</form>
-	
+
 					<div class="text-end" bis_skin_checked="1">
-						<img id="theme" src="/images/dark-light-icon.png" alt="">
+						<img id="theme" src="/images/dark-light-icon.png" alt="" />
 					</div>
 				</div>
 			</div>
 		</header>
 		<div class="py-4"></div>
-		<div class="py-5 rounded-border ">
+		<div class="py-5 rounded-border">
 			<div class="buttonDiv py4" id="advSearchButton">
 				<button class="btn btn-primary btn-lg">Advanced Search</button>
 			</div>
 
 			<p class="info-paragraph">
-				Use our advanced search filters to sort Movies by Genres, Streaming Platform, Language and the Content Ratings. 
-				<br>
+				Use our advanced search filters to sort Movies by Genres, Streaming
+				Platform, Language and the Content Ratings.
+				<br />
 				The results show the highest rated movies first. Happy Movie Hunting!
 			</p>
 			<div class="main">
@@ -199,7 +205,7 @@
 						</li>
 					</ul>
 				</div>
-	
+
 				<div class="container-dd">
 					<div class="select-btn2">
 						<span class="btn-text2">OTT</span>
@@ -284,7 +290,7 @@
 						</li>
 						<li class="item3">
 							<span class="checkbox3"> </span>
-	
+
 							<span class="item-text3">French</span>
 						</li>
 					</ul>
@@ -318,42 +324,6 @@
 			</div>
 		</div>
 
-		<div class="pt-3 mt-4">
-			<div class="container" bis_skin_checked="1">
-				<footer
-					class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top tempclass"
-				>
-					<div class="col-md-4 d-flex align-items-center" bis_skin_checked="1">
-						<a
-							href="/"
-							class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
-						>
-							<svg class="bi" width="30" height="24">
-								<use xlink:href="#bootstrap"></use>
-							</svg>
-						</a>
-						<span class="mb-3 mb-md-0 text-body-secondary"></span>
-							2024 Movie-Match</span
-						>
-					</div>
-
-					<ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-						<li class="ms-3">
-							<a
-								class="text-body-secondary"
-								href="https://github.com/arunnats/movie-match"
-								target="_blank"
-							>
-								<svg class="bi" width="24" height="24">
-									<use xlink:href="#github"></use>
-								</svg>
-							</a>
-						</li>
-					</ul>
-				</footer>
-			</div>
-		</div>
-		
 		<script>
 			document.getElementById("theme").addEventListener("click", () => {
 				document.body.classList.toggle("dark_theme");
@@ -382,31 +352,31 @@
 				});
 
 				document
-				.getElementById("searchButton")
-				.addEventListener("click", async function () {
-					const searchQuery = document.getElementById("searchInput").value;
+					.getElementById("searchButton")
+					.addEventListener("click", async function () {
+						const searchQuery = document.getElementById("searchInput").value;
 
-					// If the search bar is empty, do nothing
-					if (!searchQuery.trim()) {
-						return;
-					}
+						// If the search bar is empty, do nothing
+						if (!searchQuery.trim()) {
+							return;
+						}
 
-					try {
-						const response = await fetch("/search", {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify({ query: searchQuery }),
-						});
+						try {
+							const response = await fetch("/search", {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json",
+								},
+								body: JSON.stringify({ query: searchQuery }),
+							});
 
-						const { searchId } = await response.json();
+							const { searchId } = await response.json();
 
-						window.location.href = `/results?searchId=${searchId}`;
-					} catch (error) {
-						console.error("Error:", error);
-					}
-				});
+							window.location.href = `/results?searchId=${searchId}`;
+						} catch (error) {
+							console.error("Error:", error);
+						}
+					});
 
 				//second
 				let selectBtn2 = document.querySelector(".select-btn2"),

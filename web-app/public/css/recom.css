@@ -145,6 +145,7 @@ body {
 	margin-top: 20px;
 	padding: 15px;
 	background-color: var(--header-color);
+	color: white;
 }
 
 @media only screen and (max-width: 767px) {
