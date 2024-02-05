@@ -33,8 +33,8 @@ body {
 }
 
 .dark_theme {
-	--header-color: rgb(67, 66, 66);
-	--body-color: rgb(39, 38, 38);
+	--header-color: rgb(29, 29, 29);
+	--body-color: rgb(50, 47, 47);
 	--search-color: rgb(160, 11, 11);
 }
 
@@ -60,6 +60,10 @@ body {
 	width: 5vw;
 	height: 5vh;
 	cursor: pointer;
+}
+
+.navbar-color-field{
+    background-color: var(--header-color) ;
 }
 
 .container-fluid {

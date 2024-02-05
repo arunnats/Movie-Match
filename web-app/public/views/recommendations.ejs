@@ -37,60 +37,76 @@
 	</head>
 
 	<body>
-		<nav class="navbar navbar-expand-lg bg-body-tertiary">
-			<div class="container-fluid">
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<a href="/">
-							<img
-								src="/images/logo_navbar.png"
-								alt="IMDb Logo"
-								width="30"
-								height="30"
-							/>
-						</a>
-						<li class="nav-item">
-							<a class="nav-link" href="/recommendations">Recommendations</a>
+		<header class="p-3 navbar-color-field">
+			<div class="container" bis_skin_checked="1">
+				<div
+					class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+					bis_skin_checked="1"
+				>
+					<a
+						href="/"
+						class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+					>
+						<img
+							src="/images/logo_navbar.png"
+							alt="IMDb Logo"
+							width="35"
+							height="30"
+						/>
+					</a>
+	
+					<ul
+						class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+					>
+					<li>
+						<a href="/recommendations" class="nav-link px-2 text-white"
+							>Recommendations</a
+						>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/advanced-search">Advanced-search</a>
+						<li>
+							<a href="/advanced-search" class="nav-link px-2 text-white"
+								>Advanced-search</a
+							>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/genres">Genre</a>
+						<li>
+							<a href="/genres" class="nav-link px-2 text-white">Genre</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/streaming-service">Streaming-Service</a>
+						<li>
+							<a href="/streaming-service" class="nav-link px-2 text-white"
+								>Streaming Service</a
+							>
 						</li>
 					</ul>
-					<svg
-						id="theme"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
+	
+					<form
+						class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
+						role="search"
 					>
-						<title>weather-night</title>
-						<path
-							d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z"
-						/>
-					</svg>
-					<form class="d-flex" role="search">
 						<input
 							id="searchInput"
-							class="form-control me-2"
 							type="search"
-							placeholder="Search"
+							class="form-control me-2"
+							placeholder="Search..."
 							aria-label="Search"
 						/>
-						<button
-							id="searchButton"
-							class="btn btn-outline-success"
-							type="submit"
-						>
-							Search
-						</button>
+						<button id = "searchButton" type="submit" class="btn btn-outline-light">Search</button>
 					</form>
+	
+					<div class="text-end" bis_skin_checked="1">
+						<svg
+							id="theme"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+						>
+							<title>weather-night</title>
+							<path
+								d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z"
+							/>
+						</svg>
+					</div>
 				</div>
 			</div>
-		</nav>
+		</header>
 
 		<div class="main">
 			<div class="formDiv">
