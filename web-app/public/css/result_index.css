@@ -13,6 +13,7 @@ body {
 	background-color: grey;
 }
 
+
 :root {
 	--header-color: rgb(67, 66, 66);
 	--body-color: rgb(39, 38, 38);
@@ -22,6 +23,7 @@ body {
 
 .dark_theme {
 	--header-color: #3d8498;
+
 	--body-color: #effcff;
 	--search-color: rgb(32, 93, 110);
 	--text-color: black;
@@ -46,6 +48,14 @@ body {
 
 .section-title {
 	margin-top: 10px;
+}
+
+.dark_theme{
+    --header-color: rgb(42, 39, 39) ;
+    --body-color: rgb(50, 48, 48) ;
+    --search-color:rgb(131, 11, 11) ;
+    --text-color :white ;
+    --input-color : rgb(42, 39, 39);  
 }
 
 /*css for nav bar*/

@@ -82,6 +82,11 @@ body {
 	border-radius: 0;
 }
 
+.btn.btn-outline-light ,.btn.btn-primary.btn-lg {
+	background-color: var(--search-color);
+	border: none ;
+	border-radius: 0 ;
+}
 .streaming-logo {
 	width: 20px;
 	height: auto;
@@ -114,6 +119,7 @@ body {
 	width: 50vw;
 	background-color: var(--header-color);
 	border-radius: 10px;
+	color: var(--text-color) ;
 }
 
 .rounded-border {
