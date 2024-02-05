@@ -14,19 +14,19 @@ body {
 }
 
 :root{
-    --header-color: rgb(42, 39, 39) ;
-    --body-color: rgb(39, 38, 38) ;
-    --search-color:rgb(131, 11, 11) ;
-    --text-color :white ;
-    --input-color : rgb(42, 39, 39); 
-}
-
-.dark_theme{
     --header-color: #3d8498;
 	--body-color: #effcff;
 	--search-color: rgb(32, 93, 110);
     --text-color:black ;
     --input-color : white ; 
+}
+
+.dark_theme{
+    --header-color: rgb(42, 39, 39) ;
+    --body-color: rgb(50, 48, 48) ;
+    --search-color:rgb(131, 11, 11) ;
+    --text-color :white ;
+    --input-color : rgb(42, 39, 39);  
 }
 
 /*css for nav bar*/

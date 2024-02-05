@@ -30,12 +30,14 @@ body {
 	--header-color: #3d8498;
 	--body-color: #effcff;
 	--search-color: rgb(61, 132, 152);
+	--text-color:black ;
 }
 
 .dark_theme {
 	--header-color: rgb(29, 29, 29);
 	--body-color: rgb(50, 47, 47);
 	--search-color: rgb(160, 11, 11);
+	--text-color:white ;
 }
 
 .buttonDiv {
@@ -159,8 +161,14 @@ body {
 	border-radius: 10px;
 }
 
+p{
+	color: white ;
+}
 @media (max-width: 1000px) {
 	.hero-img {
 		width: 90vw;
 	}
 }
+
+
+
