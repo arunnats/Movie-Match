@@ -1,8 +1,8 @@
 /*theme*/
 :root{
-    --header-color : rgb(73, 134, 73) ;
-    --body-color: white ;
-    --search-color: rgb(14, 81, 5);
+    --header-color: #3d8498;
+	--body-color: #effcff;
+	--search-color: rgb(32, 93, 110);
 }
 
 .dark_theme{
@@ -13,11 +13,15 @@
 
 /*main*/ 
 
+body{
+    background-color: var(--body-color);
+}
+
 .main{
     display: flex ;
     align-items: center ;
     justify-content: center ;
-    margin-top: 10vh ;
+    margin-top: 10vh;
 }
 
 .formdiv{
@@ -34,6 +38,7 @@
     padding: 5vh 3vw 5vh ;
     border: 2px solid rgba(149, 120, 120, 0.5);
     border-radius: 20px ;
+    background-color: white;
 }
 
 
@@ -55,6 +60,12 @@
 
 /* nav bar css */
 
+#theme{
+    width: 5vw ;
+    height: 5vh ;
+    cursor: pointer;
+}
+
 .navbar-nav img {
     width: 40px; 
     display: inline-block;
@@ -63,12 +74,6 @@
 
 .navbar.navbar-expand-lg.bg-body-tertiary{
     padding: 0 ;
-}
-
-#theme{
-    width: 5vw ;
-    height: 5vh ;
-    cursor: pointer;
 }
 
 .container-fluid{
@@ -114,4 +119,14 @@ body {
 
 .navbar-nav li:last-child {
     border-right: none; 
+}
+
+.navbar-color-field{
+    background-color: var(--header-color) ;
+}
+
+.btn.btn-outline-light{
+	background-color: var(--search-color);
+	border: none ;
+	border-radius: 0 ;
 }

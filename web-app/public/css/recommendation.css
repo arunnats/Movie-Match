@@ -14,9 +14,9 @@ body {
 }
 
 :root{
-    --header-color : rgb(73, 134, 73) ;
-    --body-color: white ;
-    --search-color: rgb(14, 81, 5);
+    --header-color: #3d8498;
+	--body-color: #effcff;
+	--search-color: rgb(32, 93, 110);
 }
 
 .dark_theme{
