@@ -112,10 +112,10 @@
 
 		<div class="main">
 			<div class="content-container">
-				<h1 class="titleName"><%= categoryName %></h1>
+				<h1 class="rounded-border titleName" style="margin-top: 15px;">∙<%= categoryName %>∙</h1>
 				<% Object.keys(genreResults).forEach(genre => { %>
 				<div class="genre-section">
-					<h2><%= genre %></h2>
+					<div class="movie-title-container"><h2 class="rounded-border section-title"><%= genre %>☆</h2></div>
 					<div class="movie-cards-container">
 						<% let count = 0; %> <% // Shuffle the movies directly in the loop
 						const shuffledMovies = genreResults[genre].sort(() => Math.random()
