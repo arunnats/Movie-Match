@@ -1,13 +1,16 @@
-
+<img width="951" alt="Screenshot 2024-02-05 163912" src="https://github.com/arunnats/movie-match/assets/118368673/455b037f-3378-4751-be8e-7d4753099e49">
 ![logo_navbar](https://github.com/arunnats/movie-match/assets/118368673/b597e0c8-3325-4c12-9282-6fb5aac85135)
 
 # Movie-Match: Revolutionizing Your Movie-Watching Experience
 
 Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie discovery. Movie-Match leverages cutting-edge technology, an extensive movie database, advanced AI capabilities, and seamless search features to deliver a personalized and streamlined cinematic experience for users.
 
+<img width="950" alt="Screenshot 2024-02-05 160511" src="https://github.com/arunnats/movie-match/assets/118368673/d99d002d-6178-479d-9c62-88c56137ba3b">
+
 ## Description
 ### Extensive Movie Database
 Movie-Match boasts an extensive  movie database, housing a vast collection of films from various genres, languages, and eras. The database is updated daily using a python script and gets the daily dataset released by IMDB, uses api calls to OMDB and TMDB (movie data aggregaion sites) and updates the MongoDB database everyday. Thus, the database has the potential to host every single movie present on IMDB. The database hosts, all the details of the movie, the posters and the streaming service information.
+
 
 (As of 05-02-2024 - Databse has data from 1975 to mid 2010s)
 
@@ -15,23 +18,36 @@ Movie-Match boasts an extensive  movie database, housing a vast collection of fi
 
 ### Advanced AI Recommendations
 Unleashing the power of OpenAI's GPT-4-turbo, Movie-Match offers an  AI recommendation engine. This system analyzes user preferences and deliver tailor-made movie suggestions. Experience a new era of personalized content curation, ensuring every film recommendation resonates with your unique taste.
+<img width="952" alt="Screenshot 2024-02-05 161410" src="https://github.com/arunnats/movie-match/assets/118368673/d761e74b-d638-4365-9982-c29473e23020">
+(Search)
+<img width="951" alt="Screenshot 2024-02-05 163912" src="https://github.com/arunnats/movie-match/assets/118368673/4cc879e6-bf09-4bb8-aaaf-2580ea6484fc">
+(Results)
 
 ### Intuitive Search Functionality
-Navigating the extensive cinematic landscape is simplified with Movie-Match's intuitive search functionality. Users can effortlessly explore movies, whether searching by genre, language, or release year. Our platform empowers users to effortlessly identify the perfect movie for any mood.
+Navigating the extensive cinematic landscape is simplified with Movie-Match's intuitive search functionality. Users can effortlessly explore movies, whether searching by genre, language, or release year. Our platform empowers users to effortlessly identify the perfect movie for any mood. Using our advanced search function the user can choose movies based on all parameters and the resutls are returned taking the weighted average of their IMDB and RT ratings.
+<img width="960" alt="Screenshot 2024-02-05 160550" src="https://github.com/arunnats/movie-match/assets/118368673/d5b0bd34-a9d0-45ad-a120-54efe3090a23">
 
 ### Regular Database Updates
 Our commitment to providing up-to-date movie data remains steadfast. Daily updates, facilitated by a Python script, ensure that Movie-Match's database reflects the dynamic changes in the film industry.
+<img width="758" alt="Screenshot 2024-02-05 163435" src="https://github.com/arunnats/movie-match/assets/118368673/4505bfd3-9089-4bf8-866c-4ed4690cf267">
+
+### Movie Info pages
+Each movie has its own info page with all the details, a review carousel, buttons redirecting them to their IMDB page, information about the streaming service and the intricate details of hte movie found from IMDB, TMDB and OMDB.
+<img width="951" alt="Screenshot 2024-02-05 163615" src="https://github.com/arunnats/movie-match/assets/118368673/5043e499-98a8-4dec-ad2d-194968b09981">
+
 ## Features
 
 - Extensive movie database spanning various genres, languages and OTTs
 - AI recommendation engine powered by OpenAI's GPT-4-turbo
 - Daily updates to the movie database to reflect the latest information
+- 
 - Light/dark mode toggle for personalized viewing preferences
 - Preview for a quick glimpse of movie details
 - In depth list of all movie details for a particular movie
 - IMDB and Rotten Tomatoes ratings
 - Sorting based on OTT and filtering family friendly content
 - Sorted and randomized movies based on genre and streaming service, which are sorted by a - weighted average of RT and IMDB scores
+- 
 ## Tech Stack
 
 - Database: MongoDB
