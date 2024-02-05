@@ -62,8 +62,8 @@ body {
 	cursor: pointer;
 }
 
-.navbar-color-field{
-    background-color: var(--header-color) ;
+.navbar-color-field {
+	background-color: var(--header-color);
 }
 
 .container-fluid {
@@ -156,7 +156,6 @@ body {
 	padding: 10px;
 	width: 50vw;
 	background-color: var(--header-color);
-	border-radius: 10px;
 }
 
 @media (max-width: 1000px) {
