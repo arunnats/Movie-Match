@@ -381,6 +381,33 @@
 					});
 				});
 
+				document
+				.getElementById("searchButton")
+				.addEventListener("click", async function () {
+					const searchQuery = document.getElementById("searchInput").value;
+
+					// If the search bar is empty, do nothing
+					if (!searchQuery.trim()) {
+						return;
+					}
+
+					try {
+						const response = await fetch("/search", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ query: searchQuery }),
+						});
+
+						const { searchId } = await response.json();
+
+						window.location.href = `/results?searchId=${searchId}`;
+					} catch (error) {
+						console.error("Error:", error);
+					}
+				});
+
 				//second
 				let selectBtn2 = document.querySelector(".select-btn2"),
 					items2 = document.querySelectorAll(".item2");
