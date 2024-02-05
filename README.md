@@ -11,7 +11,7 @@ Movie-Match boasts an extensive  movie database, housing a vast collection of fi
 
 (As of 05-02-2024 - Databse has data from 1975 to mid 2010s)
 
-**Number of movies currently: (updated daily)**
+Number of movies currently: 211,555.
 
 ### Advanced AI Recommendations
 Unleashing the power of OpenAI's GPT-4-turbo, Movie-Match offers an  AI recommendation engine. This system analyzes user preferences and deliver tailor-made movie suggestions. Experience a new era of personalized content curation, ensuring every film recommendation resonates with your unique taste.
@@ -65,6 +65,68 @@ Each movie has its own info page with all the details, a review carousel, button
 - AI Engine: OpenAI's GPT-4-turbo
 - API Integration: IMDB, OMDB, TMDB
 
+
+## Installation and Usage
+
+### Deployment
+
+- Install Nodemon/Node
+
+- Clone the repository
+```bash
+  git clone https://github.com/arunnats/movie-match
+```
+
+- Install NodeJs packages
+```bash
+  npm i mongodb openai crypto express express--session fuse.js 
+```
+
+- Navigate to the Web App location
+```bash
+cd web-app
+```
+
+- Create a config.json with your OpenAI key and MongoDB collection information
+```bash
+  {
+	"mongo_connection_string": <Your MongoDB connection string>,
+	"mongo_database_name": "Your MongoDB database name",
+	"mongo_collection_name": "Your MongoDB collection name",
+	"openai_key": "Your OpenAi key"
+}
+```
+(We have not provided the database key due to security risks, please contact for acces)
+
+- Run app
+```bash
+node app.js
+```
+
+### Database functions
+
+- Navigate to the Database Scripts location
+```bash
+cd database-updation
+```
+
+- Create a dbConfig.json with your TMDB, OMDB keys and MongoDB collection information
+```bash
+  {
+	"mongo_connection_string": <Your MongoDB connection string>,
+	"mongo_database_name": "Your MongoDB database name",
+	"mongo_collection_name": "Your MongoDB collection name",
+	"omdb_api_key": "Your OMDB key",
+	"tmdb_api_key": "Your TMDB key"
+}
+```
+
+- You can now run the various python scripts after installing the dependencies 
+
+```bash
+    pip3 i pymongo
+    py <nameofscript>.py
+```
 
 ## Authors
 
