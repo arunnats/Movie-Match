@@ -1,7 +1,3 @@
-body {
-	font-family: Arial, sans-serif;
-}
-
 .movie-details {
 	display: flex;
 	flex-wrap: wrap;
@@ -12,7 +8,7 @@ body {
 }
 
 .movie-details img {
-	max-width: 300px;
+	max-width: 100%;
 	object-fit: cover;
 }
 
@@ -45,9 +41,26 @@ body {
 	width: 30px;
 }
 
+.keywords {
+	margin-top: 10px;
+}
+
 .keywords ul {
 	list-style-type: none;
 	padding: 0;
+}
+
+.keyword-container {
+	width: 100%;
+}
+
+.keyword-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.keyword-list li {
+	margin-right: 10px;
 }
 
 .review {
@@ -66,4 +79,11 @@ body {
 	display: block;
 	margin-top: 10px;
 	text-decoration: none;
+}
+
+/* Media Query for screens under 800 pixels */
+@media screen and (max-width: 800px) {
+	.keyword-container {
+		display: none; /* Hide the keywords */
+	}
 }
