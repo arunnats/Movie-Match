@@ -1,4 +1,3 @@
-<img width="951" alt="Screenshot 2024-02-05 163912" src="https://github.com/arunnats/movie-match/assets/118368673/455b037f-3378-4751-be8e-7d4753099e49">
 ![logo_navbar](https://github.com/arunnats/movie-match/assets/118368673/b597e0c8-3325-4c12-9282-6fb5aac85135)
 
 # Movie-Match: Revolutionizing Your Movie-Watching Experience
@@ -39,15 +38,14 @@ Each movie has its own info page with all the details, a review carousel, button
 
 - Extensive movie database spanning various genres, languages and OTTs
 - AI recommendation engine powered by OpenAI's GPT-4-turbo
-- Daily updates to the movie database to reflect the latest information
-- 
+- Daily updates to the movie database to reflect the latest information using python scripts
 - Light/dark mode toggle for personalized viewing preferences
 - Preview for a quick glimpse of movie details
 - In depth list of all movie details for a particular movie
 - IMDB and Rotten Tomatoes ratings
 - Sorting based on OTT and filtering family friendly content
 - Sorted and randomized movies based on genre and streaming service, which are sorted by a - weighted average of RT and IMDB scores
-- 
+- Movie information page with all details about each movie
 ## Tech Stack
 
 - Database: MongoDB
