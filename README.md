@@ -1,5 +1,9 @@
 # Movie-Match: Revolutionizing Your Movie-Watching Experience
 
+Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie discovery. Movie-Match leverages cutting-edge technology, an extensive movie database, advanced AI capabilities, and seamless search features to deliver a personalized and streamlined cinematic experience for users.
+
+<img width="950" alt="Screenshot 2024-02-05 160511" src="https://github.com/arunnats/movie-match/assets/118368673/d99d002d-6178-479d-9c62-88c56137ba3b">
+
 ## Table of Contents
 
 - [Description](#description)
@@ -9,10 +13,6 @@
   - [Deployment](#deployment)
   - [Database functions](#database-functions)
 - [Authors](#authors)
-
-Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie discovery. Movie-Match leverages cutting-edge technology, an extensive movie database, advanced AI capabilities, and seamless search features to deliver a personalized and streamlined cinematic experience for users.
-
-<img width="950" alt="Screenshot 2024-02-05 160511" src="https://github.com/arunnats/movie-match/assets/118368673/d99d002d-6178-479d-9c62-88c56137ba3b">
 
 <a name="description"></a>
 ## Description
