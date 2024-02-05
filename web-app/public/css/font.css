@@ -7,3 +7,20 @@ h5,
 h6 {
 	font-family: "Poppins", sans-serif;
 }
+
+.tempclass {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#theme {
+	width: 25px;
+	height: 25px;
+	padding-right: 20p;
+}
+
+#theme:hover {
+	cursor: pointer;
+}
