@@ -24,3 +24,24 @@ h6 {
 #theme:hover {
 	cursor: pointer;
 }
+
+:root {
+	--header-color: #3d8498;
+	--body-color: #effcff;
+	--search-color: rgb(32, 93, 110);
+	--text-color: black;
+}
+
+.light_theme {
+	--header-color: rgb(67, 66, 66);
+	--body-color: rgb(39, 38, 38);
+	--search-color: rgb(131, 11, 11);
+	--text-color: white;
+}
+
+.dark_theme {
+	--header-color: rgb(67, 66, 66);
+	--body-color: rgb(39, 38, 38);
+	--search-color: rgb(131, 11, 11);
+	--text-color: white;
+}

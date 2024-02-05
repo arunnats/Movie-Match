@@ -5,31 +5,25 @@
 }
 
 :root {
-	--header-color: rgb(67, 66, 66);
-	--body-color: rgb(39, 38, 38);
-	--search-color: rgb(131, 11, 11);
-	--text-color: white;
-}
-
-:root {
-	--header-color: #3d8498;
-	--body-color: #effcff;
-	--search-color: rgb(32, 93, 110);
-}
-
-.dark_theme {
-	--header-color: rgb(67, 66, 66);
-	--body-color: rgb(39, 38, 38);
-	--search-color: rgb(131, 11, 11);
-}
-
-.light_theme {
 	--header-color: #3d8498;
 	--body-color: #effcff;
 	--search-color: rgb(32, 93, 110);
 	--text-color: black;
 }
 
+.light_theme {
+	--header-color: rgb(67, 66, 66);
+	--body-color: rgb(39, 38, 38);
+	--search-color: rgb(131, 11, 11);
+	--text-color: white;
+}
+
+.dark_theme {
+	--header-color: rgb(67, 66, 66);
+	--body-color: rgb(39, 38, 38);
+	--search-color: rgb(131, 11, 11);
+	--text-color: white;
+}
 /*css for nav bar*/
 
 .btn.btn-outline-success {
@@ -119,13 +113,13 @@ body {
 	width: 50vw;
 	background-color: var(--header-color);
 	border-radius: 10px;
-	color: var(--text-color) ;
+	color: white ;
 }
 
 .rounded-border {
 	max-width: 80%;
 	margin: auto;
-	border: 1px solid white;
+	border: 1px solid var(--text-color);
 	border-radius: 8px; /* Adjust the radius as needed */
 	padding: 10px; /* Optional: Add padding to the container */
 }
