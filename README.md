@@ -1,5 +1,3 @@
-<img width="959" alt="Screenshot 2024-02-05 163246" src="https://github.com/arunnats/movie-match/assets/118368673/d80eb1d6-d447-48b8-aed5-e7a820461812">![logo_navbar](https://github.com/arunnats/movie-match/assets/118368673/b597e0c8-3325-4c12-9282-6fb5aac85135)
-
 # Movie-Match: Revolutionizing Your Movie-Watching Experience
 
 Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie discovery. Movie-Match leverages cutting-edge technology, an extensive movie database, advanced AI capabilities, and seamless search features to deliver a personalized and streamlined cinematic experience for users.
@@ -17,26 +15,34 @@ Movie-Match boasts an extensive  movie database, housing a vast collection of fi
 
 ### Advanced AI Recommendations
 Unleashing the power of OpenAI's GPT-4-turbo, Movie-Match offers an  AI recommendation engine. This system analyzes user preferences and deliver tailor-made movie suggestions. Experience a new era of personalized content curation, ensuring every film recommendation resonates with your unique taste.
+
 <img width="952" alt="Screenshot 2024-02-05 161410" src="https://github.com/arunnats/movie-match/assets/118368673/d761e74b-d638-4365-9982-c29473e23020">
 (Search)
+
 <img width="951" alt="Screenshot 2024-02-05 163912" src="https://github.com/arunnats/movie-match/assets/118368673/4cc879e6-bf09-4bb8-aaaf-2580ea6484fc">
 (Results)
 
 ### Intuitive Search Functionality
 Navigating the extensive cinematic landscape is simplified with Movie-Match's intuitive search functionality. Users can effortlessly explore movies, whether searching by genre, language, or release year. Our platform empowers users to effortlessly identify the perfect movie for any mood. Using our advanced search function the user can choose movies based on all parameters and the resutls are returned taking the weighted average of their IMDB and RT ratings.
+
 <img width="960" alt="Screenshot 2024-02-05 160550" src="https://github.com/arunnats/movie-match/assets/118368673/d5b0bd34-a9d0-45ad-a120-54efe3090a23">
 
 ### Regular Database Updates
 Our commitment to providing up-to-date movie data remains steadfast. Daily updates, facilitated by a Python script, ensure that Movie-Match's database reflects the dynamic changes in the film industry.
+
 <img width="758" alt="Screenshot 2024-02-05 163435" src="https://github.com/arunnats/movie-match/assets/118368673/4505bfd3-9089-4bf8-866c-4ed4690cf267">
 
 ### Sorting based on Genre and Streaming servive 
 Our code randomizes the top 200 movies in each Genre and Streaming Service so you can get a new pick every single day! 
+
 <img width="951" alt="Screenshot 2024-02-05 163235" src="https://github.com/arunnats/movie-match/assets/118368673/87e345c4-11f1-44be-889b-4187657fb33e">
+
 <img width="959" alt="Screenshot 2024-02-05 163246" src="https://github.com/arunnats/movie-match/assets/118368673/463da9a1-d7c0-4c71-8a92-91f850db0487">
 
+
 ### Movie Info pages
-Each movie has its own info page with all the details, a review carousel, buttons redirecting them to their IMDB page, information about the streaming service and the intricate details of hte movie found from IMDB, TMDB and OMDB.
+Each movie has its own info page with all the details, a review carousel, buttons redirecting them to their IMDB page, information about the streaming service and the intricate details of hte movie found from IMDB, TMDB and OMDB. 
+
 <img width="951" alt="Screenshot 2024-02-05 163615" src="https://github.com/arunnats/movie-match/assets/118368673/5043e499-98a8-4dec-ad2d-194968b09981">
 
 ## Features
