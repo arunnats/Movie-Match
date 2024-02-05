@@ -364,3 +364,10 @@ body {
 .item4.checked4 .check-icon4 {
 	transform: scale(1);
 }
+
+.tempclass {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
