@@ -8,7 +8,9 @@ Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie d
 ## Description
 ### Extensive Movie Database
 Movie-Match boasts an extensive  movie database, housing a vast collection of films from various genres, languages, and eras. The database is updated daily using a python script and gets the daily dataset released by IMDB, uses api calls to OMDB and TMDB (movie data aggregaion sites) and updates the MongoDB database everyday. Thus, the database has the potential to host every single movie present on IMDB. The database hosts, all the details of the movie, the posters and the streaming service information.
+
 (As of 05-02-2024 - Databse has data from 1975 to mid 2010s)
+
 **Number of movies currently: (updated daily)**
 
 ### Advanced AI Recommendations
