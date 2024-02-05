@@ -34,7 +34,6 @@ async function updateCache() {
 	const database = client.db(dbName);
 	const collection = database.collection("movies");
 
-
 	const totalMovies = await collection.countDocuments();
 	const batchSize = 100;
 	const batches = Math.ceil(totalMovies / batchSize);
@@ -283,103 +282,6 @@ app.get("/streaming-service", async (req, res) => {
 	}
 });
 
-// async function performAdvancedSearch(options) {
-// 	const filteredMovies = cachedMovies.filter((movie) => {
-// 		// Apply genre filter if options are selected
-// 		const movieGenres = movie.Genre.split(", ").map((g) => g.trim());
-// 		if (options.genre.length > 0 && !options.genre.includes("All")) {
-// 			if (!options.genre.some((g) => movieGenres.includes(g))) {
-// 				return false;
-// 			}
-// 		}
-
-// 		// Apply language filter if options are selected
-// 		if (options.language.length > 0 && !options.language.includes("All")) {
-// 			if (!options.language.includes(movie.Language)) {
-// 				return false;
-// 			}
-// 		}
-
-// 		// Apply OTT filter if options are selected
-// 		if (options.ott.length > 0 && !options.ott.includes("All")) {
-// 			if (
-// 				!movie.StreamingService ||
-// 				!movie.StreamingService.some((service) =>
-// 					options.ott.includes(service.StreamingService)
-// 				)
-// 			) {
-// 				return false;
-// 			}
-// 		}
-
-// 		// Apply rating filter if options are selected
-// 		if (options.rating.length > 0 && !options.rating.includes("All")) {
-// 			if (
-// 				!options.rating.includes(movie.Rated) &&
-// 				!(
-// 					options.rating.includes("18+") &&
-// 					(movie.Rated === "18" || movie.Rated === "R")
-// 				)
-// 			) {
-// 				return false;
-// 			}
-// 		}
-
-// 		return true;
-// 	});
-
-// 	const sortedMovies = filteredMovies
-// 		.map(
-// 			({
-// 				tconst,
-// 				Title,
-// 				Poster,
-// 				PosterAlt,
-// 				Language,
-// 				Genre,
-// 				IMDBRating,
-// 				RottenTomatoesRating,
-// 				StreamingService,
-// 				Year,
-// 			}) => {
-// 				// Check if StreamingService is an array and has length
-// 				const streamingService =
-// 					Array.isArray(StreamingService) && StreamingService.length > 0
-// 						? StreamingService[0]?.StreamingService
-// 						: "All";
-
-// 				// Convert ratings to numeric values, replacing '%' in Rotten Tomatoes Rating
-// 				const rtRating = RottenTomatoesRating
-// 					? parseFloat(RottenTomatoesRating.replace("%", ""))
-// 					: 0;
-// 				const imdbRating = IMDBRating ? parseFloat(IMDBRating) : 0;
-
-// 				// Calculate weighted average rating
-// 				const weightedRating = (2 * rtRating + 1.5 * imdbRating) / 3.5;
-
-// 				return {
-// 					tconst,
-// 					title: Title,
-// 					poster: Poster,
-// 					posteralt: PosterAlt,
-// 					language: Language,
-// 					genre: Genre,
-// 					imdb: IMDBRating,
-// 					rt: RottenTomatoesRating,
-// 					streaming: streamingService,
-// 					streamingLogo: StreamingService[0]?.LogoPath,
-// 					year: Year,
-// 					weightedRating,
-// 				};
-// 			}
-// 		)
-// 		.filter((movie) => !(movie.poster === "N/A" && movie.posteralt === ""))
-// 		.sort((a, b) => b.weightedRating - a.weightedRating) // Sort by descending weighted rating
-// 		.slice(0, 200); // Limit the responses to the first 100
-
-// 	return sortedMovies;
-// }
-
 async function performAdvancedSearch(options) {
 	const filteredMovies = cachedMovies.filter((movie) => {
 		// Apply genre filter if options are selected
@@ -586,11 +488,11 @@ app.get("/recommendations", (req, res) => {
 	res.render("recommendations.ejs");
 });
 
-app.get("/view-info/:tconst", (req, res) => {
+app.get("/view-info/:tconst", async (req, res) => {
 	try {
 		const { tconst } = req.params;
 
-		const movieDetails = findMovieDetailsInLocalCache(tconst);
+		const movieDetails = await findMovieDetailsInLocalCache(tconst);
 
 		res.render("movie-details.ejs", { movieDetails });
 	} catch (error) {
@@ -599,20 +501,14 @@ app.get("/view-info/:tconst", (req, res) => {
 	}
 });
 
-app.get("/test-search", async (req, res) => {
-	try {
-		const query = "misery";
-		const result = await searchMovies(query);
-		console.log("Search Result:", result);
-		res.send("Check console for results.");
-	} catch (error) {
-		console.error("Error:", error);
-		res.status(500).send("Internal Server Error");
-	}
-});
-
 function findMovieDetailsInLocalCache(tconst) {
-	const cachedMovie = cachedMovies.find((movie) => movie.tconst === tconst);
+	return new Promise((resolve, reject) => {
+		const cachedMovie = cachedMovies.find((movie) => movie.tconst === tconst);
 
-	return cachedMovie;
+		if (cachedMovie) {
+			resolve(cachedMovie);
+		} else {
+			reject(new Error("Movie details not found"));
+		}
+	});
 }
