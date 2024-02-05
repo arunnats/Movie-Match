@@ -13,7 +13,7 @@ database = client[mongo_database_name]
 
 collection = database["movies"]  # Replace "movies" with your actual collection name
 
-last_10_entries = collection.find().sort([('_id', -1)]).limit(10)
+last_10_entries = collection.find().sort([('_id', -1)]).limit(1)
 
 # Print the results
 for entry in last_10_entries:

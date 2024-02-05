@@ -6,6 +6,7 @@ from pymongo import MongoClient
 import json
 from aiohttp import ClientSession
 from io import BytesIO
+import sys
 
 async def fetch_watch_providers(session, movie_id, tmdb_api_key):
     watch_providers_url = f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers?api_key={tmdb_api_key}"
@@ -50,12 +51,19 @@ async def fetch_watch_providers(session, movie_id, tmdb_api_key):
 
 async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
     async with semaphore:
+        tconst = row.get('tconst', '')
+        title_type = row.get('titleType', 'movie')  # Set default value to 'movie' if not present
+
         movie_document = {
-            "tconst": row['tconst'],
-            "titleType": row['titleType'],
+            "tconst": tconst,
+            "titleType": title_type,
         }
 
-        tmdb_id_url = f"https://api.themoviedb.org/3/find/{row['tconst']}?api_key={tmdb_api_key}&external_source=imdb_id"
+        if not tconst:
+            print("Error: 'tconst' key not found in the row dictionary.")
+            return movie_document
+
+        tmdb_id_url = f"https://api.themoviedb.org/3/find/{tconst}?api_key={tmdb_api_key}&external_source=imdb_id"
 
         try:
             async with session.get(tmdb_id_url, timeout=15) as response:
@@ -70,8 +78,6 @@ async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
                         keywords_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/keywords?api_key={tmdb_api_key}"
                         poster_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={tmdb_api_key}"
                         reviews_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/reviews?api_key={tmdb_api_key}"
-
-                        # await asyncio.sleep(1 / 50)
 
                         async with session.get(keywords_url) as keywords_response, session.get(poster_url) as poster_response, session.get(reviews_url) as reviews_response:
                             keywords_data = await keywords_response.json()
@@ -95,10 +101,10 @@ async def fetch_tmdb_data(session, semaphore, row, tmdb_api_key):
                                 print(f"Failed to fetch Keywords, Poster, or Reviews data for {row['tconst']}.")
 
                     else:
-                        print(f"TMDB ID not found for {row['tconst']}.")
+                        print(f"TMDB ID not found for {tconst}.")
 
         except aiohttp.ClientError as e:
-            print(f"Error fetching TMDB ID for {row['tconst']}: {e}")
+            print(f"Error fetching TMDB ID for {tconst}: {e}")
 
         return movie_document
 
@@ -136,14 +142,31 @@ async def fetch_omdb_data(session, row, omdb_api_key):
 
     return None
 
-async def process_chunk(session, df_chunk, semaphore, tmdb_api_key, omdb_api_key):
-    tasks_tmdb = [fetch_tmdb_data(session, semaphore, row, tmdb_api_key) for _, row in df_chunk.iterrows()]
-    results_tmdb = await asyncio.gather(*tasks_tmdb)
+async def process_single_movie(session, tconst, tmdb_api_key, omdb_api_key):
+    async with ClientSession() as session:
+        semaphore = asyncio.Semaphore(1)  # Adjust the semaphore limit to 1 for processing one movie at a time
 
-    tasks_omdb = [fetch_omdb_data(session, row, omdb_api_key) for _, row in df_chunk.iterrows()]
-    results_omdb = await asyncio.gather(*tasks_omdb)
+        # Fetch TMDB and OMDB data for the specified IMDb movie ID
+        tmdb_data = await fetch_tmdb_data(session, semaphore, {'tconst': tconst}, tmdb_api_key)
+        omdb_data = await fetch_omdb_data(session, {'tconst': tconst}, omdb_api_key)
 
-    return results_tmdb, results_omdb
+        if tmdb_data and omdb_data:
+            # Combine TMDB and OMDB data
+            tmdb_data.update(omdb_data)
+
+            # Fetch watch providers data
+            watch_providers_data = await fetch_watch_providers(session, tmdb_data['id'], tmdb_api_key)
+            tmdb_data["StreamingService"] = watch_providers_data
+
+            # Insert the combined data into MongoDB
+            client = MongoClient(mongo_connection_string)
+            db = client[mongo_database_name]
+            collection = db[mongo_collection_name]
+
+            collection.insert_one(tmdb_data)
+            print(f"Document for {tconst} inserted into MongoDB successfully.")
+
+            client.close()
 
 async def main():
     print("Started Process")
@@ -151,6 +174,7 @@ async def main():
     with open('dbConfig.json') as config_file:
         config = json.load(config_file)
 
+    global mongo_connection_string, mongo_database_name, mongo_collection_name
     mongo_connection_string = config.get('mongo_connection_string', '')
     mongo_database_name = config.get('mongo_database_name', '')
     mongo_collection_name = config.get('mongo_collection_name', '')
@@ -161,49 +185,13 @@ async def main():
         print("MongoDB connection string or API keys not found in config.json.")
         exit()
 
-    url = "https://datasets.imdbws.com/title.basics.tsv.gz"
+    if len(sys.argv) != 2:
+        print("Usage: python script_name.py <IMDb_movie_ID>")
+        exit()
 
-    batch_size = 100
+    tconst = sys.argv[1]
 
-    start_tconst = "tt0371746"  # Specify the starting tconst value
-    
-    async with ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                with gzip.open(BytesIO(await response.read()), 'rt', encoding='utf-8') as file:
-                    df = pd.read_csv(file, delimiter='\t')
-
-                    client = MongoClient(mongo_connection_string)
-                    db = client[mongo_database_name]
-                    collection = db[mongo_collection_name]
-
-                    semaphore = asyncio.Semaphore(50)
-
-                    while True:
-                        # Search from a particular tconst onwards
-                        movie_df = df[(df['tconst'] >= start_tconst) & (df['titleType'] == 'movie') & (df['originalTitle'].notna())].head(batch_size)
-
-                        if movie_df.empty:
-                            break
-
-                        results_tmdb, results_omdb = await process_chunk(session, movie_df, semaphore, tmdb_api_key, omdb_api_key)
-
-                        for result_tmdb, result_omdb in zip(results_tmdb, results_omdb):
-                            if result_tmdb and result_omdb:
-                                result_tmdb.update(result_omdb)
-                                collection.insert_one(result_tmdb)
-                                print(f"Document for {result_tmdb['tconst']} inserted into MongoDB successfully.")
-                                
-                                # Print watch providers data
-                                watch_providers_data = result_tmdb.get("StreamingService", {})
-                                # print(f"Watch Providers Data: {watch_providers_data}")
-
-                        start_tconst = movie_df['tconst'].max()
-
-                    client.close()
-
-            else:
-                print("Failed to download the file. Check the URL or try again later.")
+    await process_single_movie(None, tconst, tmdb_api_key, omdb_api_key)
 
 if __name__ == "__main__":
     asyncio.run(main())

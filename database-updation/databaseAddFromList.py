@@ -144,7 +144,6 @@ async def process_chunk(session, df_chunk, semaphore, tmdb_api_key, omdb_api_key
     results_omdb = await asyncio.gather(*tasks_omdb)
 
     return results_tmdb, results_omdb
-
 async def main():
     print("Started Process")
 
@@ -161,49 +160,51 @@ async def main():
         print("MongoDB connection string or API keys not found in config.json.")
         exit()
 
-    url = "https://datasets.imdbws.com/title.basics.tsv.gz"
+    tconst_list_file = 'tconstList.txt'
 
     batch_size = 100
-
-    start_tconst = "tt0371746"  # Specify the starting tconst value
     
     async with ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                with gzip.open(BytesIO(await response.read()), 'rt', encoding='utf-8') as file:
-                    df = pd.read_csv(file, delimiter='\t')
+        # Load tconsts from the file
+        with open(tconst_list_file, 'r') as tconst_file:
+            tconsts = [line.strip() for line in tconst_file.readlines()]
 
-                    client = MongoClient(mongo_connection_string)
-                    db = client[mongo_database_name]
-                    collection = db[mongo_collection_name]
+        client = MongoClient(mongo_connection_string)
+        db = client[mongo_database_name]
+        collection = db[mongo_collection_name]
 
-                    semaphore = asyncio.Semaphore(50)
+        semaphore = asyncio.Semaphore(50)
 
-                    while True:
-                        # Search from a particular tconst onwards
-                        movie_df = df[(df['tconst'] >= start_tconst) & (df['titleType'] == 'movie') & (df['originalTitle'].notna())].head(batch_size)
+        for start_tconst in tconsts:
+            print(f"Processing tconst: {start_tconst}")
+            
+            while True:
+                # Search from a particular tconst onwards
+                movie_df = df[(df['tconst'] == start_tconst) & (df['titleType'] == 'movie') & (df['originalTitle'].notna())].head(batch_size)
 
-                        if movie_df.empty:
-                            break
+                if movie_df.empty:
+                    break
 
-                        results_tmdb, results_omdb = await process_chunk(session, movie_df, semaphore, tmdb_api_key, omdb_api_key)
+                results_tmdb, results_omdb = await process_chunk(session, movie_df, semaphore, tmdb_api_key, omdb_api_key)
 
-                        for result_tmdb, result_omdb in zip(results_tmdb, results_omdb):
-                            if result_tmdb and result_omdb:
-                                result_tmdb.update(result_omdb)
-                                collection.insert_one(result_tmdb)
-                                print(f"Document for {result_tmdb['tconst']} inserted into MongoDB successfully.")
-                                
-                                # Print watch providers data
-                                watch_providers_data = result_tmdb.get("StreamingService", {})
-                                # print(f"Watch Providers Data: {watch_providers_data}")
+                for result_tmdb, result_omdb in zip(results_tmdb, results_omdb):
+                    if result_tmdb and result_omdb:
+                        existing_document = collection.find_one({"tconst": result_tmdb['tconst']})
 
-                        start_tconst = movie_df['tconst'].max()
+                        if not existing_document:
+                            result_tmdb.update(result_omdb)
+                            collection.insert_one(result_tmdb)
+                            print(f"Document for {result_tmdb['tconst']} inserted into MongoDB successfully.")
+                        else:
+                            print(f"Document for {result_tmdb['tconst']} already exists in MongoDB. Skipping.")
 
-                    client.close()
+                        # Print watch providers data
+                        watch_providers_data = result_tmdb.get("StreamingService", {})
+                        # print(f"Watch Providers Data: {watch_providers_data}")
 
-            else:
-                print("Failed to download the file. Check the URL or try again later.")
+                start_tconst = movie_df['tconst'].max()
+
+        client.close()
 
 if __name__ == "__main__":
     asyncio.run(main())
