@@ -136,14 +136,31 @@ async def fetch_omdb_data(session, row, omdb_api_key):
 
     return None
 
-async def process_chunk(session, df_chunk, semaphore, tmdb_api_key, omdb_api_key):
-    tasks_tmdb = [fetch_tmdb_data(session, semaphore, row, tmdb_api_key) for _, row in df_chunk.iterrows()]
-    results_tmdb = await asyncio.gather(*tasks_tmdb)
+async def process_chunk(session, df_chunk, semaphore, tmdb_api_key, omdb_api_key, collection):
+    tasks = [fetch_tmdb_data(session, semaphore, row, tmdb_api_key) for _, row in df_chunk.iterrows()]
+    results = await asyncio.gather(*tasks)
 
-    tasks_omdb = [fetch_omdb_data(session, row, omdb_api_key) for _, row in df_chunk.iterrows()]
-    results_omdb = await asyncio.gather(*tasks_omdb)
+    for result in results:
+        if result:
+            tconst = result['tconst']
 
-    return results_tmdb, results_omdb
+            # Check if the tconst already exists in the database
+            if not collection.find_one({"tconst": tconst}):
+                # Fetch additional data (OMDB, watch providers, etc.) if not in the database
+                result_omdb = await fetch_omdb_data(session, result, omdb_api_key)
+
+                if result_omdb:
+                    result.update(result_omdb)
+                    collection.insert_one(result)
+                    print(f"Document for {tconst} inserted into MongoDB successfully.")
+                    # Print watch providers data
+                    watch_providers_data = result.get("StreamingService", {})
+                    # print(f"Watch Providers Data: {watch_providers_data}")
+                else:
+                    print(f"Failed to fetch OMDB data for {tconst}.")
+            else:
+                print(f"Document for {tconst} already exists in the database. Skipping.")
+
 
 async def main():
     print("Started Process")
@@ -165,7 +182,7 @@ async def main():
 
     batch_size = 100
 
-    start_tconst = "tt0371746"  # Specify the starting tconst value
+    start_tconst = "tt1228705"  # Specify the starting tconst value
     
     async with ClientSession() as session:
         async with session.get(url) as response:
@@ -186,17 +203,7 @@ async def main():
                         if movie_df.empty:
                             break
 
-                        results_tmdb, results_omdb = await process_chunk(session, movie_df, semaphore, tmdb_api_key, omdb_api_key)
-
-                        for result_tmdb, result_omdb in zip(results_tmdb, results_omdb):
-                            if result_tmdb and result_omdb:
-                                result_tmdb.update(result_omdb)
-                                collection.insert_one(result_tmdb)
-                                print(f"Document for {result_tmdb['tconst']} inserted into MongoDB successfully.")
-                                
-                                # Print watch providers data
-                                watch_providers_data = result_tmdb.get("StreamingService", {})
-                                # print(f"Watch Providers Data: {watch_providers_data}")
+                        await process_chunk(session, movie_df, semaphore, tmdb_api_key, omdb_api_key, collection)
 
                         start_tconst = movie_df['tconst'].max()
 
