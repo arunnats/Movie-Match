@@ -21,9 +21,9 @@ Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie d
 
 Movie-Match boasts an extensive movie database, housing a vast collection of films from various genres, languages, and eras. The database is updated daily using a python script and gets the daily dataset released by IMDB, uses api calls to OMDB and TMDB (movie data aggregaion sites) and updates the MongoDB database everyday. Thus, the database has the potential to host every single movie present on IMDB. The database hosts, all the details of the movie, the posters and the streaming service information.
 
-(As of 05-02-2024 - Databse has data from 1975 to mid 2010s)
+(As of 06-02-2024 - Database has data from 1940 to mid 2023 in no particular order)
 
-Number of movies currently: 211,555.
+Number of movies currently: 277,708.
 
 ### Advanced AI Recommendations
 
