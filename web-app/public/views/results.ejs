@@ -101,43 +101,52 @@
 			</div>
 		</div>
 	</header>
-		<div class="main">
-			<div class="content-container">
-				<h1 class="rounded-border titleName ">∙Results∙</h1>
-				<div class="movie-cards-container">
-					<% searchResults.forEach(movie => { %> <% if (movie) { %>
-					<div class="movie-cards">
-						<img
-							src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
-							alt="Image"
-						/>
-						<div class="card-content">
-							<h5><%= movie.title %></h5>
-							<h6><%= movie.year %></h6>
-							<h6><%= movie.language %></h6>
-							<h6><%= movie.genre %></h6>
-							<div class="streaming-div">
-								<% if (movie.streaming && movie.streaming !== 'None Found') { %>
-								<img
-									style="width: 20px; height: auto; margin-right: 5px"
-									src="<%= movie.streamingLogo %>"
-									alt="Logo"
-								/>
-								<h4><%= movie.streaming %></h6>
-								<% } %>
-							</div>
-							<a
-								href="/view-info/<%= movie.tconst %>"
-								class="btn btn-primary btn-sm"
-								role="button"
-								>See More</a
-							>
-						</div>
-					</div>
-					<% } %> <% }); %>
-				</div>
-			</div>
-		</div>
+		
+	<div class="main">
+    <div class="content-container">
+        <h1 class="rounded-border titleName ">∙Results∙</h1>
+        <div class="movie-cards-container">
+            <% 
+            const seenTconsts = new Set();
+            searchResults.forEach(movie => {
+                if (movie && !seenTconsts.has(movie.tconst)) {
+                    seenTconsts.add(movie.tconst);
+            %>
+            <div class="movie-cards">
+                <img
+                    src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
+                    alt="Image"
+                />
+                <div class="card-content">
+                    <h5><%= movie.title %></h5>
+                    <h6><%= movie.year %></h6>
+                    <h6><%= movie.language %></h6>
+                    <h6><%= movie.genre %></h6>
+                    <div class="streaming-div">
+                        <% if (movie.streaming && movie.streaming !== 'None Found') { %>
+                        <img
+                            style="width: 20px; height: auto; margin-right: 5px"
+                            src="<%= movie.streamingLogo %>"
+                            alt="Logo"
+                        />
+                        <h4><%= movie.streaming %></h6>
+                        <% } %>
+                    </div>
+                    <a
+                        href="/view-info/<%= movie.tconst %>"
+                        class="btn btn-primary btn-sm"
+                        role="button"
+                        >See More</a
+                    >
+                </div>
+            </div>
+            <% 
+                }
+            }); 
+            %>
+        </div>
+    </div>
+</div>
 
 		<div class="pt-3 mt-4">
 			<div class="container" bis_skin_checked="1">

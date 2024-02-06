@@ -103,46 +103,59 @@
 
 		<div class="main">
 			<div class="content-container">
-				<h1 class="rounded-border titleName" style="margin-top: 15px;">∙<%= categoryName %>∙</h1>
-				<% Object.keys(genreResults).forEach(genre => { %>
-				<div class="genre-section">
-					<div class="movie-title-container"><h2 class="rounded-border section-title"><%= genre %>☆</h2></div>
-					<div class="movie-cards-container">
-						<% let count = 0; %> <% // Shuffle the movies directly in the loop
-						const shuffledMovies = genreResults[genre].sort(() => Math.random()
-						- 0.5); %> <% shuffledMovies.slice(0, 10).forEach(movie => { %>
-						<div class="movie-cards">
-							<img
-								src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
-								alt="Image"
-							/>
-							<div class="card-content">
-								<h6><%= movie.title %></h6>
-								<h6><%= movie.year %></h6>
-								<h6><%= movie.language %></h6>
-								<h6><%= movie.genre %></h6>
-								<div class="streaming-div">
-									<% if (movie.streaming && movie.streaming !== 'None Found') {
+					<h1 class="rounded-border titleName" style="margin-top: 15px;">∙<%= categoryName %>∙</h1>
+					<% 
+					const shuffledGenres = Object.keys(genreResults).sort(() => Math.random() - 0.5);
+					shuffledGenres.forEach(genre => { 
+					%>
+					<div class="genre-section">
+							<div class="movie-title-container"><h2 class="rounded-border section-title"><%= genre %>☆</h2></div>
+							<div class="movie-cards-container">
+									<%
+									const seenTconsts = new Set();
+									let count = 0;
+									const shuffledMovies = genreResults[genre].sort(() => Math.random() - 0.5);
+									shuffledMovies.slice(0, 10).forEach(movie => {
+											if (!seenTconsts.has(movie.tconst)) {
+													seenTconsts.add(movie.tconst);
 									%>
-									<img
-										style="width: 20px; height: auto; margin-right: 5px"
-										src="<%= movie.streamingLogo %>"
-										alt="Logo"
-									/>
-									<h6><%= movie.streaming %></h6>
-									<% } %>
-								</div>
-								<a href="/view-info/<%= movie.tconst %>"
-									><button class = "see">See More</button></a
-								>
+									<div class="movie-cards">
+											<img
+													src="<%= (movie.poster && movie.poster !== 'N/A') ? movie.poster : movie.posteralt || '/path/to/default-image.jpg' %>"
+													alt="Image"
+											/>
+											<div class="card-content">
+													<h6><%= movie.title %></h6>
+													<h6><%= movie.year %></h6>
+													<h6><%= movie.language %></h6>
+													<h6><%= movie.genre %></h6>
+													<div class="streaming-div">
+															<% if (movie.streaming && movie.streaming !== 'None Found') { %>
+															<img
+																	style="width: 20px; height: auto; margin-right: 5px"
+																	src="<%= movie.streamingLogo %>"
+																	alt="Logo"
+															/>
+															<h6><%= movie.streaming %></h6>
+															<% } %>
+													</div>
+													<a href="/view-info/<%= movie.tconst %>"
+															><button class="see">See More</button></a
+													>
+											</div>
+									</div>
+									<%
+													count++;
+											}
+									}); 
+									%>
 							</div>
-						</div>
-						<% count++; %> <% }); %>
 					</div>
-				</div>
-				<% }); %>
+					<% }); %>
 			</div>
-		</div>
+	</div>
+	
+	
 
 		<div class="pt-3 mt-4">
 			<div class="container" bis_skin_checked="1">
