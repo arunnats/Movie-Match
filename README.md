@@ -14,25 +14,6 @@ Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie d
 
 <img width="950" alt="Screenshot 2024-02-05 160511" src="https://github.com/arunnats/movie-match/assets/118368673/d99d002d-6178-479d-9c62-88c56137ba3b">
 
-<<<<<<< Updated upstream
-## Table of Contents
-
-- [Description](#description)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Installation and Usage](#installation-and-usage)
-  - [Deployment](#deployment)
-  - [Database functions](#database-functions)
-- [Authors](#authors)
-
-<a name="description"></a>
-## Description
-### Extensive Movie Database
-Movie-Match boasts an extensive  movie database, housing a vast collection of films from various genres, languages, and eras. The database is updated daily using a python script and gets the daily dataset released by IMDB, uses api calls to OMDB and TMDB (movie data aggregaion sites) and updates the MongoDB database everyday. Thus, the database has the potential to host every single movie present on IMDB. The database hosts, all the details of the movie, the posters and the streaming service information.
-=======
-<a name="description"></a>
->>>>>>> Stashed changes
-
 ## Description
 
 ### Extensive Movie Database
