@@ -14,6 +14,7 @@ Welcome to Movie-Match, the ultimate platform reshaping the landscape of movie d
 
 <img width="950" alt="Screenshot 2024-02-05 160511" src="https://github.com/arunnats/movie-match/assets/118368673/d99d002d-6178-479d-9c62-88c56137ba3b">
 
+<a name="description"></a>
 ## Description
 
 ### Extensive Movie Database
@@ -60,15 +61,10 @@ Each movie has its own info page with all the details, a review carousel, button
 
 <img width="951" alt="Screenshot 2024-02-05 163615" src="https://github.com/arunnats/movie-match/assets/118368673/5043e499-98a8-4dec-ad2d-194968b09981">
 
-<<<<<<< Updated upstream
-<a name="features"></a>
-=======
 <a name="installation-and-usage"></a>
-
 ## Installation and Usage
 
 <a name="deployment"></a>
-
 ### Deployment
 
 - Install Nodemon/Node
@@ -111,7 +107,6 @@ node app.js
 ```
 
 <a name="database-functions"></a>
-
 ### Database functions
 
 - Navigate to the Database Scripts location
@@ -140,8 +135,6 @@ cd database-updation
 ```
 
 <a name="features"></a>
-
->>>>>>> Stashed changes
 ## Features
 
 - Extensive movie database spanning various genres, languages and OTTs
@@ -156,7 +149,6 @@ cd database-updation
 - Movie information page with all details about each movie
 
 <a name="tech-stack"></a>
-
 ## Tech Stack
 
 - Database: MongoDB
@@ -165,75 +157,7 @@ cd database-updation
 - AI Engine: OpenAI's GPT-4-turbo
 - API Integration: IMDB, OMDB, TMDB
 
-<<<<<<< Updated upstream
-<a name="installation-and-usage"></a>
-## Installation and Usage
-
-<a name="deployment"></a>
-### Deployment
-
-- Install Nodemon/Node
-
-- Clone the repository
-```bash
-  git clone https://github.com/arunnats/movie-match
-```
-
-- Install NodeJs packages
-```bash
-  npm i mongodb openai crypto express express--session fuse.js 
-```
-
-- Navigate to the Web App location
-```bash
-cd web-app
-```
-
-- Create a config.json with your OpenAI key and MongoDB collection information
-```bash
-  {
-	"mongo_connection_string": <Your MongoDB connection string>,
-	"mongo_database_name": "Your MongoDB database name",
-	"mongo_collection_name": "Your MongoDB collection name",
-	"openai_key": "Your OpenAi key"
-}
-```
-(We have not provided the database key due to security risks, please contact for acces)
-
-- Run app
-```bash
-node app.js
-```
-
-<a name="database-functions"></a>
-### Database functions
-
-- Navigate to the Database Scripts location
-```bash
-cd database-updation
-```
-
-- Create a dbConfig.json with your TMDB, OMDB keys and MongoDB collection information
-```bash
-  {
-	"mongo_connection_string": <Your MongoDB connection string>,
-	"mongo_database_name": "Your MongoDB database name",
-	"mongo_collection_name": "Your MongoDB collection name",
-	"omdb_api_key": "Your OMDB key",
-	"tmdb_api_key": "Your TMDB key"
-}
-```
-
-- You can now run the various python scripts after installing the dependencies 
-
-```bash
-    pip3 i pymongo
-    py <nameofscript>.py
-```
-
 <a name="authors"></a>
-=======
->>>>>>> Stashed changes
 ## Authors
 
 - [@arunnats](https://www.arunnats.com/)
